@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Análisis de Fertilidad — Ingenes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" />
+<style>
+:root {
+  --color-bg:          #ffffff;
+  --color-bg-soft:     #f6f8fb;
+  --color-bg-blue:     #eef3fb;
+  --color-ink:         #253f78;
+  --color-ink-soft:    #3d558a;
+  --color-muted:       #6a7894;
+  --color-line:        #e3e8ef;
+  --color-primary:     #253f78;
+  --color-primary-600: #1a2f5c;
+  --color-accent:      #c8a040;
+  --color-accent-600:  #b08a32;
+  --color-white:       #ffffff;
+  --color-verde:       #1a7a4a;
+  --color-verde-bg:    #edfaf3;
+  --color-verde-border:#a8dfc3;
+  --color-azul-border: #b0c4e8;
+  --color-caution:     #7a4a0a;
+  --color-caution-bg:  #fdf3e0;
+
+  --font-serif: "Spectral", Georgia, serif;
+  --font-sans:  "Quattrocento Sans", system-ui, -apple-system, sans-serif;
+
+  --fs-xs:   0.8125rem;
+  --fs-sm:   0.9375rem;
+  --fs-base: 1rem;
+  --fs-lg:   1.125rem;
+  --fs-xl:   1.375rem;
+  --fs-2xl:  1.75rem;
+
+  --space-1: 0.25rem;  --space-2: 0.5rem;   --space-3: 0.75rem;
+  --space-4: 1rem;     --space-5: 1.5rem;   --space-6: 2rem;
+  --space-7: 3rem;
+
+  --radius-sm:   8px;   --radius-md: 12px;
+  --radius-lg:   18px;  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(11,37,69,.06);
+  --shadow-md: 0 6px 18px rgba(11,37,69,.08);
+  --shadow-lg: 0 12px 32px rgba(11,37,69,.12);
+
+  --t-fast: 150ms ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: 1.55;
+  color: var(--color-ink);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+button { font-family: inherit; }
+
+/* ── Header ── */
+.site-header {
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.85rem 0;
+  position: sticky; top: 0; z-index: 100;
+}
+.site-header .container { display: flex; align-items: center; justify-content: space-between; }
+.header-logo img { height: 40px; width: auto; display: block; }
+.lang-toggle {
+  display: flex; align-items: center; gap: 2px;
+  background: var(--color-bg-soft); border: 1px solid var(--color-line);
+  border-radius: var(--radius-full); padding: 3px;
+}
+.lang-btn {
+  appearance: none; background: transparent; border: none;
+  border-radius: var(--radius-full); padding: .25rem .65rem;
+  font-size: var(--fs-xs); font-weight: 700; color: var(--color-muted);
+  cursor: pointer; transition: background var(--t-fast), color var(--t-fast);
+  letter-spacing: .04em;
+}
+.lang-btn.is-active { background: var(--color-primary); color: var(--color-white); }
+
+/* ── Layout ── */
+.container       { max-width: 660px;  margin: 0 auto; padding: 0 var(--space-5); }
+.container--wide { max-width: 840px; margin: 0 auto; padding: 0 var(--space-5); }
+
+/* ── Progress ── */
+.progress-bar-wrap {
+  height: 4px; background: var(--color-line);
+  border-radius: var(--radius-full); overflow: hidden; margin-bottom: var(--space-6);
+}
+.progress-bar-fill {
+  height: 100%; background: var(--color-accent);
+  border-radius: var(--radius-full); transition: width .4s ease;
+}
+.progress-label {
+  font-size: var(--fs-xs); color: var(--color-muted);
+  margin-bottom: var(--space-3); text-align: right;
+  font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+}
+
+/* ── Screens ── */
+.screen {
+  min-height: calc(100vh - 73px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: var(--space-7) 0;
+}
+.screen[hidden] { display: none !important; }
+
+/* ── Intro ── */
+.intro-wrap { text-align: center; max-width: 580px; margin: 0 auto; }
+.eyebrow {
+  display: inline-block; padding: .25rem .8rem;
+  background: var(--color-bg-blue); color: var(--color-primary);
+  border-radius: var(--radius-full); font-size: var(--fs-xs);
+  font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+.intro-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 5vw, 2.8rem);
+  font-weight: 500; line-height: 1.15; margin: 0 0 var(--space-4);
+}
+.intro-title em { font-style: italic; color: var(--color-accent); }
+.intro-lead {
+  font-size: var(--fs-lg); color: var(--color-muted);
+  max-width: 460px; margin: 0 auto var(--space-6); line-height: 1.6;
+}
+.trust-pills {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: var(--space-2); margin-bottom: var(--space-6);
+}
+.trust-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: .3rem .75rem; background: var(--color-bg-soft);
+  border: 1px solid var(--color-line); border-radius: var(--radius-full);
+  font-size: var(--fs-xs); color: var(--color-ink-soft); font-weight: 700;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  padding: .85rem 2rem; background: var(--color-primary); color: var(--color-white);
+  border: none; border-radius: var(--radius-md); font-size: var(--fs-base);
+  font-weight: 700; cursor: pointer;
+  transition: background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  text-decoration: none; line-height: 1;
+}
+.btn-primary:hover { background: var(--color-primary-600); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-accent {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  padding: .85rem 2rem; background: var(--color-accent); color: var(--color-white);
+  border: none; border-radius: var(--radius-md); font-size: var(--fs-base);
+  font-weight: 700; cursor: pointer;
+  transition: background var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+  text-decoration: none; line-height: 1;
+}
+.btn-accent:hover { background: var(--color-accent-600); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+
+.btn-ghost {
+  appearance: none; background: transparent; border: none;
+  color: var(--color-muted); font-size: var(--fs-sm); cursor: pointer;
+  padding: .5rem 0; display: inline-flex; align-items: center; gap: .3rem;
+  transition: color var(--t-fast);
+}
+.btn-ghost:hover { color: var(--color-ink); }
+
+/* ── Quiz ── */
+.quiz-wrap { max-width: 640px; margin: 0 auto; }
+.q-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 3.5vw, 1.65rem);
+  font-weight: 500; line-height: 1.25; color: var(--color-ink);
+  text-align: center; margin: 0 0 var(--space-5);
+}
+.q-title em { font-style: italic; color: var(--color-accent); }
+.q-sub {
+  text-align: center; font-size: var(--fs-sm); color: var(--color-muted);
+  margin: -12px 0 var(--space-4);
+}
+.options-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3); margin-bottom: var(--space-5);
+}
+.options-grid--1 { grid-template-columns: 1fr; }
+.options-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.options-grid--4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 520px) {
+  .options-grid { grid-template-columns: 1fr; }
+  .options-grid--3, .options-grid--4 { grid-template-columns: repeat(2, 1fr); }
+}
+.option-card {
+  appearance: none; background: var(--color-white);
+  border: 2px solid var(--color-line); border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-3); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-2); text-align: center; color: var(--color-ink-soft);
+  transition: border-color var(--t-fast), background var(--t-fast),
+              transform var(--t-fast), box-shadow var(--t-fast);
+  font-size: var(--fs-sm); font-weight: 700; line-height: 1.3;
+  position: relative;
+}
+.option-card .card-icon { font-size: 1.6rem; line-height: 1; }
+.option-card:hover { border-color: var(--color-accent); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.option-card.is-selected {
+  border-color: var(--color-primary); background: var(--color-bg-blue); color: var(--color-primary);
+}
+.option-card.is-selected::after {
+  content: "✓"; position: absolute; top: 8px; right: 10px;
+  font-size: var(--fs-xs); font-weight: 700; color: var(--color-primary);
+}
+.option-card .card-sub {
+  font-size: var(--fs-xs); font-weight: 400; color: var(--color-muted); margin-top: 2px;
+}
+.option-card.is-selected .card-sub { color: var(--color-ink-soft); }
+.quiz-nav { display: flex; align-items: center; justify-content: space-between; margin-top: var(--space-4); }
+
+/* ── Verde/Azul badge ── */
+.lead-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: .55rem 1.2rem; border-radius: var(--radius-full);
+  font-size: var(--fs-sm); font-weight: 700; margin-bottom: var(--space-4);
+  border: 2px solid transparent;
+}
+.lead-badge--verde { background: var(--color-verde-bg); color: var(--color-verde); border-color: var(--color-verde-border); }
+.lead-badge--azul  { background: var(--color-bg-blue);  color: var(--color-primary); border-color: var(--color-azul-border); }
+.lead-badge .badge-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.lead-badge--verde .badge-dot { background: var(--color-verde); }
+.lead-badge--azul  .badge-dot { background: var(--color-primary); }
+
+/* ── Results: treatment recommendation card ── */
+.reco-hero {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #1e3566 100%);
+  color: var(--color-white); border-radius: var(--radius-lg);
+  padding: var(--space-6); text-align: center;
+  margin: 0 auto var(--space-4); max-width: 440px;
+  box-shadow: var(--shadow-lg);
+}
+.reco-hero-label {
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; opacity: .7; margin-bottom: var(--space-3);
+}
+.reco-hero-name {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-weight: 500; line-height: 1.15;
+  margin-bottom: var(--space-3); color: var(--color-white);
+}
+.reco-hero-name em { font-style: italic; color: var(--color-accent); }
+.reco-hero-why {
+  font-size: var(--fs-sm); opacity: .85; line-height: 1.5;
+  max-width: 320px; margin: 0 auto;
+}
+
+/* ── Timeline insight card ── */
+.timeline-card {
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-4);
+  display: flex; align-items: flex-start; gap: var(--space-3);
+}
+.timeline-card-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+.timeline-card-body {}
+.timeline-card-label {
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--color-muted); margin-bottom: 4px;
+}
+.timeline-card-text { font-size: var(--fs-sm); color: var(--color-ink); line-height: 1.55; }
+
+/* ── Locked/Unlocked section ── */
+.lock-section { position: relative; border-radius: var(--radius-lg); overflow: hidden; }
+.lock-content {
+  filter: blur(5px); pointer-events: none; user-select: none;
+  transition: filter .4s ease;
+}
+.lock-section.is-unlocked .lock-content { filter: none; pointer-events: auto; user-select: auto; }
+.lock-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(246,248,251,.35) 0%, rgba(246,248,251,.93) 32%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: var(--space-5); text-align: center;
+  transition: opacity .3s ease; z-index: 10;
+}
+.lock-section.is-unlocked .lock-overlay { opacity: 0; pointer-events: none; }
+.lock-icon { font-size: 2rem; margin-bottom: var(--space-3); }
+.lock-heading { font-family: var(--font-serif); font-size: var(--fs-xl); font-weight: 500; margin-bottom: var(--space-2); }
+.lock-sub { font-size: var(--fs-sm); color: var(--color-muted); margin-bottom: var(--space-5); max-width: 340px; }
+.lock-count {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: .3rem .8rem; border-radius: var(--radius-full);
+  background: var(--color-bg-blue); border: 1px solid var(--color-azul-border);
+  font-size: var(--fs-xs); font-weight: 700; color: var(--color-primary);
+  margin-bottom: var(--space-4);
+}
+
+/* ── Factor cards ── */
+.factors-grid {
+  display: grid; grid-template-columns: 1fr; gap: var(--space-3);
+  padding: var(--space-5); background: var(--color-bg-soft); border-radius: var(--radius-lg);
+}
+@media (min-width: 560px) { .factors-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.factor-card {
+  background: var(--color-white); border-radius: var(--radius-md);
+  padding: var(--space-4); border-left: 4px solid var(--color-line);
+  box-shadow: var(--shadow-sm);
+}
+.factor-card--positive { border-left-color: var(--color-verde); }
+.factor-card--caution  { border-left-color: var(--color-accent); }
+.factor-card--strong   { border-left-color: #c0392b; }
+.factor-card--neutral  { border-left-color: var(--color-line); }
+
+.factor-name  { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 4px; }
+.factor-value { font-size: var(--fs-sm); font-weight: 700; color: var(--color-ink); margin-bottom: var(--space-1); }
+.factor-impact { font-size: var(--fs-xs); color: var(--color-muted); line-height: 1.5; }
+.factor-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: .72rem; font-weight: 700; padding: 2px 7px;
+  border-radius: var(--radius-full); margin-bottom: var(--space-2);
+}
+.factor-badge--positive { background: var(--color-verde-bg); color: var(--color-verde); }
+.factor-badge--caution  { background: var(--color-caution-bg); color: var(--color-caution); }
+.factor-badge--strong   { background: #fdecea; color: #c0392b; }
+.factor-badge--neutral  { background: var(--color-bg-soft); color: var(--color-muted); }
+
+/* ── Verde/Azul explanation card ── */
+.color-card {
+  border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6);
+  grid-column: 1 / -1; border: 2px solid transparent;
+}
+.color-card--verde { background: var(--color-verde-bg); border-color: var(--color-verde-border); }
+.color-card--azul  { background: var(--color-bg-blue);  border-color: var(--color-azul-border); }
+.color-card-header { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3); }
+.color-dot { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; }
+.color-dot--verde { background: var(--color-verde); }
+.color-dot--azul  { background: var(--color-primary); }
+.color-card-title { font-family: var(--font-serif); font-size: var(--fs-xl); font-weight: 500; }
+.color-card--verde .color-card-title { color: var(--color-verde); }
+.color-card--azul  .color-card-title { color: var(--color-primary); }
+.color-card-body { font-size: var(--fs-sm); color: var(--color-ink-soft); line-height: 1.7; }
+
+/* ── Next steps card (unlocked) ── */
+.next-steps-card {
+  background: linear-gradient(135deg, var(--color-bg-blue) 0%, #dce9fb 100%);
+  border: 1px solid rgba(37,63,120,.15); border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6); grid-column: 1 / -1;
+}
+.next-steps-label { font-size: var(--fs-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--space-2); }
+.next-steps-text  { font-family: var(--font-serif); font-size: var(--fs-lg); font-weight: 500; color: var(--color-ink); line-height: 1.5; margin-bottom: var(--space-3); }
+.next-steps-body  { font-size: var(--fs-sm); color: var(--color-ink-soft); line-height: 1.7; }
+
+/* ── Form ── */
+.form-wrap {
+  background: var(--color-white); border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg); padding: var(--space-6);
+  box-shadow: var(--shadow-md); max-width: 460px; margin: 0 auto;
+}
+.form-wrap-title { font-family: var(--font-serif); font-size: var(--fs-2xl); font-weight: 500; line-height: 1.2; margin: 0 0 var(--space-2); }
+.form-wrap-title em { font-style: italic; color: var(--color-accent); }
+.form-wrap-sub { font-size: var(--fs-sm); color: var(--color-muted); margin-bottom: var(--space-5); }
+.form-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--space-4); }
+.form-field label { font-size: var(--fs-sm); font-weight: 700; color: var(--color-ink); }
+.form-field input {
+  padding: .65rem .85rem; border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-sm); font-family: var(--font-sans);
+  font-size: var(--fs-base); color: var(--color-ink); background: var(--color-white);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast); outline: none;
+}
+.form-field input:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(37,63,120,.12); }
+.form-field.has-error input { border-color: #c0392b; }
+.field-error { font-size: var(--fs-xs); color: #c0392b; display: none; }
+.form-field.has-error .field-error { display: block; }
+.phone-row { display: flex; gap: var(--space-2); }
+.country-select {
+  padding: .65rem .5rem; border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-sm); font-family: var(--font-sans);
+  font-size: var(--fs-sm); color: var(--color-ink); background: var(--color-bg-soft);
+  cursor: pointer; flex-shrink: 0; outline: none; transition: border-color var(--t-fast);
+}
+.country-select:focus { border-color: var(--color-primary); }
+.phone-row input { flex: 1; }
+.form-privacy { font-size: var(--fs-xs); color: var(--color-muted); text-align: center; margin-top: var(--space-3); }
+
+/* ── CTA card ── */
+.consult-card {
+  background: var(--color-primary); color: var(--color-white);
+  border-radius: var(--radius-lg); padding: var(--space-6);
+  text-align: center; margin-top: var(--space-5);
+}
+.consult-title { font-family: var(--font-serif); font-size: var(--fs-2xl); font-weight: 500; margin-bottom: var(--space-2); }
+.consult-title em { font-style: italic; color: var(--color-accent); }
+.consult-sub { font-size: var(--fs-sm); opacity: .8; margin-bottom: var(--space-5); max-width: 360px; margin-left: auto; margin-right: auto; }
+
+/* ── Men/special ── */
+.special-wrap { text-align: center; max-width: 520px; margin: 0 auto; }
+.special-icon { font-size: 3rem; margin-bottom: var(--space-4); }
+.special-title { font-family: var(--font-serif); font-size: var(--fs-2xl); font-weight: 500; margin: 0 0 var(--space-3); }
+.special-title em { font-style: italic; color: var(--color-accent); }
+.special-body { font-size: var(--fs-base); color: var(--color-muted); line-height: 1.7; margin-bottom: var(--space-6); }
+
+/* ── Footer / disclaimer ── */
+.site-footer {
+  background: var(--color-bg-blue); color: var(--color-ink-soft);
+  text-align: center; padding: var(--space-5) 0;
+  font-size: var(--fs-xs); border-top: 1px solid var(--color-line);
+  margin-top: var(--space-7);
+}
+.disclaimer {
+  background: var(--color-bg-soft); border: 1px solid var(--color-line);
+  border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-xs); color: var(--color-muted);
+  text-align: center; margin-top: var(--space-5); line-height: 1.5;
+}
+
+/* ── Profile icon combos ── */
+.profile-icon {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  min-height: 44px;
+}
+.profile-icon img {
+  height: 38px;
+  width: auto;
+  display: block;
+  /* Ingenes blue #253f78 — NO transition: avoids hue interpolation through green */
+  filter: brightness(0) saturate(100%) invert(18%) sepia(82%) saturate(415%) hue-rotate(196deg) brightness(88%) contrast(102%);
+}
+.profile-icon--solo img { height: 42px; }
+/* Gold #c8a040 on hover / selected */
+.option-card:hover .profile-icon img {
+  filter: brightness(0) saturate(100%) invert(64%) sepia(48%) saturate(570%) hue-rotate(3deg) brightness(100%) contrast(90%);
+}
+.option-card.is-selected .profile-icon img {
+  filter: brightness(0) saturate(100%) invert(64%) sepia(48%) saturate(570%) hue-rotate(3deg) brightness(100%) contrast(90%);
+}
+
+/* ── Age slider card ── */
+.age-card {
+  background: var(--color-bg-soft);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5) var(--space-4);
+  margin-bottom: var(--space-5);
+}
+.age-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--space-4);
+}
+.age-card-label {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.age-card-value {
+  font-size: var(--fs-sm);
+  color: var(--color-muted);
+}
+.age-card-value strong {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-right: 3px;
+}
+.age-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-line);
+  outline: none;
+  cursor: pointer;
+  display: block;
+  margin-bottom: 8px;
+}
+.age-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(37,63,120,.3);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.age-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.12);
+  box-shadow: 0 4px 12px rgba(37,63,120,.4);
+}
+.age-slider::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(37,63,120,.3);
+}
+.age-slider::-moz-range-track {
+  height: 4px; border-radius: 2px; background: var(--color-line);
+}
+.age-slider-bounds {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+/* ── Animations ── */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-in { animation: fadeSlideIn .35s ease both; }
+
+@media (max-width: 600px) {
+  .screen { padding: var(--space-5) 0; }
+  .form-wrap { padding: var(--space-5); }
+  .reco-hero { padding: var(--space-5); }
+  .factors-grid { padding: var(--space-4); }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container container--wide">
+    <a href="#" class="header-logo">
+      <img src="ING_Logotipo_Ing_Azul.png" alt="Ingenes" />
+    </a>
+    <div class="lang-toggle" role="group" aria-label="Language / Idioma">
+      <button class="lang-btn is-active" data-lang="es" onclick="setLang('es')">ES</button>
+      <button class="lang-btn"           data-lang="en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<!-- INTRO -->
+<section id="screen-intro" class="screen">
+  <div class="container">
+    <div class="intro-wrap animate-in">
+      <span class="eyebrow" data-i18n="intro.eyebrow">Análisis de Fertilidad</span>
+      <h1 class="intro-title" data-i18n-html="intro.title">
+        Descubre el camino hacia <em>tu bebé</em>
+      </h1>
+      <p class="intro-lead" data-i18n="intro.lead">
+        Responde 4 preguntas y obtén un análisis personalizado basado en tu perfil.
+      </p>
+      <div class="trust-pills">
+        <span class="trust-pill">⏱ <span data-i18n="intro.pill2">2 minutos</span></span>
+        <span class="trust-pill">🔒 <span data-i18n="intro.pill3">100% confidencial</span></span>
+      </div>
+      <button class="btn-primary" onclick="startQuiz()" style="font-size:1.1rem;padding:.9rem 2.4rem;">
+        <span data-i18n="intro.cta">Comenzar ahora →</span>
+      </button>
+      <p class="disclaimer" style="margin-top:var(--space-4)" data-i18n="intro.disclaimer">
+        Esta herramienta ofrece orientación general. No constituye diagnóstico médico ni promesa de resultado.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="screen-quiz" class="screen" hidden>
+  <div class="container">
+    <div class="quiz-wrap">
+      <div class="progress-label"><span id="quiz-step-label"></span></div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="quiz-progress-fill" style="width:0%"></div>
+      </div>
+      <div id="quiz-question-area"></div>
+      <div class="quiz-nav">
+        <button class="btn-ghost" id="btn-back" onclick="prevStep()">
+          ← <span data-i18n="quiz.back">Anterior</span>
+        </button>
+        <button class="btn-primary" id="btn-next" onclick="nextStep()" disabled>
+          <span data-i18n="quiz.next">Siguiente →</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS (pre-unlock) -->
+<section id="screen-results" class="screen" hidden>
+  <div class="container container--wide">
+
+    <div class="animate-in" style="text-align:center;margin-bottom:var(--space-5);">
+      <span class="eyebrow" data-i18n="results.eyebrow">Tu perfil</span>
+      <h2 class="intro-title" id="results-headline" style="font-size:clamp(1.5rem,4vw,2.2rem)"></h2>
+    </div>
+
+    <!-- Treatment recommendation hero -->
+    <div id="reco-hero-wrap"></div>
+
+    <!-- Timeline insight -->
+    <div id="timeline-insight-wrap"></div>
+
+    <!-- Locked factor breakdown -->
+    <div class="lock-section" id="lock-section">
+      <div class="lock-content">
+        <div class="factors-grid" id="factors-grid"></div>
+      </div>
+      <div class="lock-overlay">
+        <div class="lock-icon">🔍</div>
+        <div class="lock-count" id="lock-count-badge"></div>
+        <h3 class="lock-heading" data-i18n="results.lock.heading">Análisis detallado de tu perfil</h3>
+        <p class="lock-sub" data-i18n="results.lock.sub">Ingresa tus datos para ver el desglose de cada factor y la ruta recomendada para tu caso.</p>
+        <button class="btn-accent" onclick="goToForm()">
+          <span data-i18n="results.lock.cta">Ver mi análisis completo →</span>
+        </button>
+      </div>
+    </div>
+
+    <p class="disclaimer" data-i18n="results.disclaimer">
+      Orientación general basada en criterios clínicos. Cada caso es único; un especialista evaluará tu situación concreta.
+    </p>
+  </div>
+</section>
+
+<!-- FORM GATE -->
+<section id="screen-form" class="screen" hidden>
+  <div class="container">
+    <div class="form-wrap animate-in">
+      <span class="eyebrow" style="margin-bottom:var(--space-3)" data-i18n="form.eyebrow">Casi listo</span>
+      <h2 class="form-wrap-title" data-i18n-html="form.title">Tu análisis <em>está listo</em></h2>
+      <p class="form-wrap-sub" data-i18n="form.sub">Ingresa tus datos para desbloquear el desglose completo de tu perfil.</p>
+
+      <form id="contact-form" novalidate onsubmit="submitForm(event)">
+        <div class="form-field" id="ff-name">
+          <label for="cf-name" data-i18n="form.name.label">Nombre</label>
+          <input type="text" id="cf-name" name="name" autocomplete="given-name"
+                 data-i18n-placeholder="form.name.placeholder" placeholder="Tu nombre" />
+          <span class="field-error" data-i18n="form.name.error">Ingresa tu nombre.</span>
+        </div>
+        <div class="form-field" id="ff-email">
+          <label for="cf-email" data-i18n="form.email.label">Correo electrónico</label>
+          <input type="email" id="cf-email" name="email" autocomplete="email"
+                 data-i18n-placeholder="form.email.placeholder" placeholder="correo@ejemplo.com" />
+          <span class="field-error" data-i18n="form.email.error">Ingresa un correo válido.</span>
+        </div>
+        <div class="form-field" id="ff-phone">
+          <label for="cf-phone" data-i18n="form.phone.label">Teléfono</label>
+          <div class="phone-row">
+            <select class="country-select" id="cf-country" aria-label="País">
+              <option value="+52">🇲🇽 +52</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+1ca">🇨🇦 +1</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+54">🇦🇷 +54</option>
+              <option value="+57">🇨🇴 +57</option>
+              <option value="+56">🇨🇱 +56</option>
+              <option value="+51">🇵🇪 +51</option>
+              <option value="+55">🇧🇷 +55</option>
+              <option value="+49">🇩🇪 +49</option>
+            </select>
+            <input type="tel" id="cf-phone" name="phone" autocomplete="tel-national"
+                   data-i18n-placeholder="form.phone.placeholder" placeholder="10 dígitos" />
+          </div>
+          <span class="field-error" id="phone-error" data-i18n="form.phone.error">Ingresa tu número de teléfono.</span>
+        </div>
+        <button type="submit" class="btn-accent" style="width:100%;justify-content:center;margin-top:var(--space-2);">
+          <span data-i18n="form.submit">Ver mi análisis completo →</span>
+        </button>
+      </form>
+      <p class="form-privacy" data-i18n="form.privacy">Tus datos son confidenciales. No compartimos tu información con terceros.</p>
+    </div>
+  </div>
+</section>
+
+<!-- UNLOCKED -->
+<section id="screen-unlocked" class="screen" hidden>
+  <div class="container container--wide">
+    <div class="animate-in" style="text-align:center;margin-bottom:var(--space-6);">
+      <span class="eyebrow" data-i18n="unlocked.eyebrow">Análisis completo</span>
+      <h2 class="intro-title" id="unlocked-headline" style="font-size:clamp(1.5rem,4vw,2.2rem)"></h2>
+    </div>
+
+    <div id="unlocked-reco-hero"></div>
+    <div id="unlocked-timeline-insight"></div>
+
+    <div class="factors-grid" id="unlocked-factors" style="margin-top:var(--space-5);"></div>
+
+    <div class="consult-card animate-in" style="margin-top:var(--space-6);">
+      <p class="consult-title" data-i18n-html="unlocked.cta.title">¿Listo para dar el <em>siguiente paso</em>?</p>
+      <p class="consult-sub" data-i18n="unlocked.cta.sub">Un especialista de Ingenes revisará tu perfil y te orientará sin costo ni compromiso.</p>
+      <a href="https://www.ingenes.com" target="_blank" rel="noopener" class="btn-accent">
+        <span data-i18n="unlocked.cta.btn">Hablar con un especialista →</span>
+      </a>
+    </div>
+
+    <p class="disclaimer" data-i18n="results.disclaimer">
+      Orientación general basada en criterios clínicos. Cada caso es único; un especialista evaluará tu situación concreta.
+    </p>
+  </div>
+</section>
+
+<!-- MEN / SPECIAL -->
+<section id="screen-men" class="screen" hidden>
+  <div class="container">
+    <div class="special-wrap animate-in">
+      <div class="special-icon">👨‍👨‍👦</div>
+      <h2 class="special-title" data-i18n-html="men.title">Tu camino tiene <em>opciones especiales</em></h2>
+      <p class="special-body" data-i18n="men.body">
+        Para perfiles masculinos, los tratamientos involucran tecnologías reproductivas especializadas. Un especialista de Ingenes puede orientarte sin costo ni compromiso.
+      </p>
+      <div class="consult-card" style="max-width:440px;margin:0 auto;">
+        <p class="consult-title" data-i18n-html="unlocked.cta.title">¿Listo para dar el <em>siguiente paso</em>?</p>
+        <p class="consult-sub" data-i18n="unlocked.cta.sub">Un especialista de Ingenes revisará tu perfil y te orientará sin costo ni compromiso.</p>
+        <a href="https://www.ingenes.com" target="_blank" rel="noopener" class="btn-accent">
+          <span data-i18n="unlocked.cta.btn">Hablar con un especialista →</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <p data-i18n="footer.copy">© 2026 Ingenes Instituto Nacional de Genómica. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   TRANSLATIONS
+   ============================================================ */
+const T = {
+  es: {
+    "intro.eyebrow":    "Análisis de Fertilidad",
+    "intro.title":      "Descubre el camino hacia <em>tu bebé</em>",
+    "intro.lead":       "Responde 4 preguntas y obtén un análisis personalizado basado en tu perfil.",
+    "intro.pill1":      "Basado en criterios clínicos",
+    "intro.pill2":      "Te toma solo 2 minutos",
+    "intro.pill3":      "100% confidencial",
+    "intro.cta":        "Comenzar ahora →",
+    "intro.disclaimer": "Esta herramienta ofrece orientación general. No constituye diagnóstico médico ni promesa de resultado.",
+
+    "quiz.back": "Anterior",
+    "quiz.next": "Siguiente →",
+    "quiz.step": "Pregunta",
+    "quiz.of":   "de",
+
+    /* Q1 */
+    "q.profile.title":        "¿Cuál es tu sexo biológico y el de tu pareja?",
+    "q.profile.hetero":       "Pareja heterosexual",
+    "q.profile.women":        "Pareja de mujeres",
+    "q.profile.single-woman": "Mujer sola",
+    "q.profile.men":          "Pareja de hombres\no hombre solo",
+
+    /* Q2 */
+    "q.age.title":             "¿Cuántos años tiene la mujer?",
+    "q.age.sub.hetero":        "La edad de la mujer es el factor más determinante en fertilidad.",
+    "q.age.sub.women":         "Usa la edad de quien llevará el embarazo.",
+    "q.age.sub.single-woman":  "Tu edad es el factor más determinante.",
+    "q.age.card.label": "Tu edad",
+    "q.age.unit":       "años",
+    "q.age.<30":   "Menos de 30",
+    "q.age.30-34": "30 – 34",
+    "q.age.35-39": "35 – 39",
+    "q.age.40+":   "40 o más",
+
+    /* Q3 */
+    "q.previous.title":           "¿Han tenido tratamientos de fertilidad antes?",
+    "q.previous.none":            "No, sería el primero",
+    "q.previous.iui":             "Sí, inseminaciones",
+    "q.previous.iui.sub":         "Sin éxito",
+    "q.previous.ivf-fail":        "Sí, FIV sin éxito",
+    "q.previous.ivf-success":     "Sí, FIV exitosa",
+    "q.previous.ivf-success.sub": "Buscamos otro bebé",
+
+    /* Q4 */
+    "q.timeline.title": "¿En cuánto tiempo te gustaría tener a tu bebé?",
+    "q.timeline.<1y":   "En menos de 1 año",
+    "q.timeline.1-3y":  "En más de 1 año",
+    "q.timeline.3y+":   "En 3 o más años",
+
+    /* Results */
+    "results.eyebrow":  "Tu perfil",
+
+
+    "results.headline.consult": "Tu perfil tiene factores <em>que vale la pena conocer</em>",
+    "results.headline.women":   "Tu perfil tiene <em>opciones claras</em> disponibles",
+
+    /* Treatment recommendations */
+    "reco.consult.label": "Tu siguiente paso",
+    "reco.consult.name":  "Primera consulta con un especialista",
+    "reco.consult.why":   "Cada caso es único. Los factores de tu perfil determinarán el tratamiento más adecuado — y eso solo puede definirlo un especialista tras evaluarte de forma personalizada.",
+
+    "reco.women.label": "Opciones disponibles para tu perfil",
+    "reco.women.name":  "Método ROPA · Inseminación con donante",
+    "reco.women.why":   "Para parejas de mujeres estas son las principales rutas disponibles en reproducción asistida. El primer paso siempre es una consulta con nuestros especialistas, quienes evaluarán cuál es la más adecuada para tu caso.",
+
+    /* Timeline insight */
+    "timeline.icon": "🗓",
+    "timeline.label": "Tu horizonte de tiempo",
+    "timeline.<1y.text":  "Tu meta es en menos de 1 año. Hay pasos concretos que conviene dar pronto — una consulta inicial ayuda a definir el plan desde hoy.",
+    "timeline.1-3y.text": "Tienes un horizonte de tiempo razonable. Una evaluación inicial ahora te permitirá planificar con calma y sin prisas innecesarias.",
+    "timeline.3y+.text":  "Con ese horizonte, explorar opciones de preservación de fertilidad puede ser muy valioso para que tengas más alternativas en el futuro.",
+
+    /* Lock */
+    "results.lock.count":   "factores analizados en tu perfil",
+    "results.lock.heading": "Análisis detallado de tu perfil",
+    "results.lock.sub":     "Ingresa tus datos para ver el desglose de cada factor y la ruta recomendada para tu caso.",
+    "results.lock.cta":     "Ver mi análisis completo →",
+    "results.disclaimer":   "Orientación general basada en criterios clínicos. Cada caso es único; un especialista evaluará tu situación concreta.",
+
+    /* Form */
+    "form.eyebrow":           "Casi listo",
+    "form.title":             "Tu análisis <em>está listo</em>",
+    "form.sub":               "Ingresa tus datos para desbloquear el desglose completo de tu perfil.",
+    "form.name.label":        "Nombre",
+    "form.name.placeholder":  "Tu nombre",
+    "form.name.error":        "Ingresa tu nombre.",
+    "form.email.label":       "Correo electrónico",
+    "form.email.placeholder": "correo@ejemplo.com",
+    "form.email.error":       "Ingresa un correo válido.",
+    "form.phone.label":       "Teléfono",
+    "form.phone.placeholder": "10 dígitos",
+    "form.phone.error":       "Ingresa tu número de teléfono.",
+    "form.submit":            "Ver mi análisis completo →",
+    "form.privacy":           "Tus datos son confidenciales. No compartimos tu información con terceros.",
+
+    /* Unlocked */
+    "unlocked.eyebrow":          "Análisis completo",
+    "unlocked.headline.consult": "Tu análisis completo — <em>lo que encontramos en tu perfil</em>",
+    "unlocked.headline.women":   "Tu análisis completo — <em>opciones para tu perfil</em>",
+    "unlocked.cta.title":        "¿Listo para dar el <em>siguiente paso</em>?",
+    "unlocked.cta.sub":          "Un especialista de Ingenes revisará tu perfil y te orientará sin costo ni compromiso.",
+    "unlocked.cta.btn":          "Hablar con un especialista →",
+
+    /* Factor cards */
+    "factor.profile.name":   "Perfil familiar",
+    "factor.profile.impact": "Determina el tipo de tratamiento más adecuado para tu situación.",
+
+    "factor.age.name":             "Edad de la mujer",
+    "factor.age.impact.<30":       "Menos de 30 años — rango de edad óptimo para tratamientos de fertilidad.",
+    "factor.age.impact.30-34":     "30–34 años — rango ideal con buena respuesta a tratamientos.",
+    "factor.age.impact.35-39":     "35–39 años — la reserva ovárica y calidad de óvulos comienzan a disminuir con la edad.",
+    "factor.age.impact.40+":       "40 o más años — se recomienda evaluación especializada; pueden existir alternativas muy efectivas.",
+
+    "factor.previous.name":                  "Tratamientos previos",
+    "factor.previous.impact.none":           "Sin historial de tratamientos — punto de partida limpio para evaluar opciones.",
+    "factor.previous.impact.iui":            "Inseminaciones previas sin éxito — indica que puede existir un factor que la inseminación no resuelve.",
+    "factor.previous.impact.ivf-fail":       "FIV previa sin éxito — el análisis del ciclo anterior es clave para el siguiente protocolo.",
+    "factor.previous.impact.ivf-success":    "FIV exitosa previa — fertilidad con tratamiento demostrada.",
+
+    "factor.timeline.name":        "Horizonte de tiempo",
+    "factor.timeline.impact.<1y":  "Meta en menos de 1 año — conviene actuar pronto para alinear tiempos.",
+    "factor.timeline.impact.1-3y": "Horizonte de 1 a 3 años — hay margen para evaluar y planificar con calma.",
+    "factor.timeline.impact.3y+":  "Más de 3 años — la preservación de fertilidad puede ser una opción muy valiosa.",
+
+    /* Profile explanation (internal color never shown) */
+    "color.profile.title": "Lo que significa tu perfil",
+    "color.verde.body":  "Tu combinación de factores —edad y sin tratamientos previos— sitúa tu caso en condiciones favorables para iniciar. Los tratamientos disponibles tienen buenas bases en perfiles como el tuyo.",
+    "color.azul.body":   "Tu perfil requiere un protocolo más personalizado, ya sea por la edad, el historial de tratamientos o el tipo de perfil. Ingenes tiene amplia experiencia en estos casos y los especialistas están listos para diseñar el camino adecuado para ti.",
+
+    /* Next steps */
+    "next-steps.label": "Siguiente paso recomendado",
+    "next-steps.text.consult": "Agenda tu primera consulta con uno de nuestros especialistas. Ellos revisarán tu caso completo, solicitarán los estudios necesarios y definirán el camino más adecuado para ti — sin costo ni compromiso.",
+    "next-steps.text.women":   "Agenda tu primera consulta con uno de nuestros especialistas. Evaluarán cuál de las opciones disponibles — Método ROPA o inseminación con donante — es la más adecuada para tu caso específico.",
+
+    "badge.positive": "Factor favorable",
+    "badge.caution":  "A considerar",
+    "badge.strong":   "Factor relevante",
+    "badge.neutral":  "Neutral",
+
+    "men.title": "Tu camino tiene <em>opciones especiales</em>",
+    "men.body":  "Para parejas de hombres y hombres solos, la subrogación es la vía disponible en reproducción asistida. Contamos con especialistas que pueden orientarte sobre todo el proceso — sin costo ni compromiso.",
+
+    "footer.copy": "© 2026 Ingenes Instituto Nacional de Genómica. Todos los derechos reservados.",
+  },
+
+  en: {
+    "intro.eyebrow":    "Fertility Analysis",
+    "intro.title":      "Discover the path to <em>your baby</em>",
+    "intro.lead":       "Answer 4 questions and get a personalized analysis based on your profile.",
+    "intro.pill1":      "Based on clinical criteria",
+    "intro.pill2":      "Takes only 2 minutes",
+    "intro.pill3":      "100% confidential",
+    "intro.cta":        "Start now →",
+    "intro.disclaimer": "This tool provides general guidance. It is not a medical diagnosis or a promise of outcome.",
+
+    "quiz.back": "Back",
+    "quiz.next": "Next →",
+    "quiz.step": "Question",
+    "quiz.of":   "of",
+
+    "q.profile.title":        "What is your biological sex and your partner's?",
+    "q.profile.hetero":       "Heterosexual couple",
+    "q.profile.women":        "Female couple",
+    "q.profile.single-woman": "Single woman",
+    "q.profile.men":          "Male couple\nor single man",
+
+    "q.age.title":             "How old is the woman?",
+    "q.age.sub.hetero":        "The woman's age is the most determinant factor in fertility.",
+    "q.age.sub.women":         "Use the age of the woman who will carry the pregnancy.",
+    "q.age.sub.single-woman":  "Your age is the most determinant factor.",
+    "q.age.card.label": "Your age",
+    "q.age.unit":       "years",
+    "q.age.<30":   "Under 30",
+    "q.age.30-34": "30 – 34",
+    "q.age.35-39": "35 – 39",
+    "q.age.40+":   "40 or older",
+
+    "q.previous.title":           "Have you had any fertility treatments before?",
+    "q.previous.none":            "No, this would be the first",
+    "q.previous.iui":             "Yes, IUI",
+    "q.previous.iui.sub":         "Without success",
+    "q.previous.ivf-fail":        "Yes, IVF without success",
+    "q.previous.ivf-success":     "Yes, successful IVF",
+    "q.previous.ivf-success.sub": "We want another baby",
+
+    "q.timeline.title": "When would you like to have your baby?",
+    "q.timeline.<1y":   "Within 1 year",
+    "q.timeline.1-3y":  "In more than 1 year",
+    "q.timeline.3y+":   "In 3 or more years",
+
+    "results.eyebrow":  "Your profile",
+
+
+    "results.headline.consult": "Your profile has factors <em>worth knowing about</em>",
+    "results.headline.women":   "Your profile has <em>clear options</em> available",
+
+    "reco.consult.label": "Your next step",
+    "reco.consult.name":  "First consultation with a specialist",
+    "reco.consult.why":   "Every case is unique. The factors in your profile will determine the most appropriate treatment — and only a specialist can define that after a personalized evaluation.",
+
+    "reco.women.label": "Options available for your profile",
+    "reco.women.name":  "ROPA Method · Donor insemination",
+    "reco.women.why":   "For female couples, these are the main routes available in assisted reproduction. The first step is always a consultation with our specialists, who will assess which option is most appropriate for your specific case.",
+
+    "timeline.icon": "🗓",
+    "timeline.label": "Your time horizon",
+    "timeline.<1y.text":  "Your goal is within 1 year. There are concrete steps worth taking soon — an initial consultation helps define the plan starting today.",
+    "timeline.1-3y.text": "You have a reasonable time horizon. An initial evaluation now will let you plan calmly and without unnecessary rush.",
+    "timeline.3y+.text":  "With that horizon, exploring fertility preservation options may be very valuable so you have more alternatives in the future.",
+
+    "results.lock.count":   "factors analyzed in your profile",
+    "results.lock.heading": "Detailed profile analysis",
+    "results.lock.sub":     "Enter your details to see the breakdown of each factor and the recommended path for your case.",
+    "results.lock.cta":     "See my full analysis →",
+    "results.disclaimer":   "General guidance based on clinical criteria. Each case is unique; a specialist will assess your specific situation.",
+
+    "form.eyebrow":           "Almost there",
+    "form.title":             "Your analysis <em>is ready</em>",
+    "form.sub":               "Enter your details to unlock the full breakdown of your profile.",
+    "form.name.label":        "Name",
+    "form.name.placeholder":  "Your name",
+    "form.name.error":        "Please enter your name.",
+    "form.email.label":       "Email address",
+    "form.email.placeholder": "email@example.com",
+    "form.email.error":       "Please enter a valid email.",
+    "form.phone.label":       "Phone",
+    "form.phone.placeholder": "10 digits",
+    "form.phone.error":       "Please enter your phone number.",
+    "form.submit":            "See my full analysis →",
+    "form.privacy":           "Your data is confidential. We do not share your information with third parties.",
+
+    "unlocked.eyebrow":          "Full analysis",
+    "unlocked.headline.consult": "Your full analysis — <em>what we found in your profile</em>",
+    "unlocked.headline.women":   "Your full analysis — <em>options for your profile</em>",
+    "unlocked.cta.title":        "Ready to take the <em>next step</em>?",
+    "unlocked.cta.sub":          "An Ingenes specialist will review your profile and guide you at no cost and with no commitment.",
+    "unlocked.cta.btn":          "Speak with a specialist →",
+
+    "factor.profile.name":   "Family profile",
+    "factor.profile.impact": "Determines the most appropriate treatment type for your situation.",
+
+    "factor.age.name":             "Woman's age",
+    "factor.age.impact.<30":       "Under 30 — optimal age range for fertility treatments.",
+    "factor.age.impact.30-34":     "30–34 — ideal range with good response to treatments.",
+    "factor.age.impact.35-39":     "35–39 — ovarian reserve and egg quality begin to decline with age.",
+    "factor.age.impact.40+":       "40 or older — specialized evaluation recommended; very effective alternatives may exist.",
+
+    "factor.previous.name":               "Previous treatments",
+    "factor.previous.impact.none":        "No treatment history — a clean starting point to evaluate options.",
+    "factor.previous.impact.iui":         "Prior failed IUI — suggests a factor that insemination alone may not resolve.",
+    "factor.previous.impact.ivf-fail":    "Prior failed IVF — analysis of the previous cycle is key for the next protocol.",
+    "factor.previous.impact.ivf-success": "Prior successful IVF — demonstrated fertility with treatment.",
+
+    "factor.timeline.name":        "Time horizon",
+    "factor.timeline.impact.<1y":  "Goal within 1 year — acting soon helps align timing.",
+    "factor.timeline.impact.1-3y": "1–3 year horizon — there is room to evaluate and plan calmly.",
+    "factor.timeline.impact.3y+":  "More than 3 years — fertility preservation may be a very valuable option.",
+
+    /* Profile explanation (internal color never shown) */
+    "color.profile.title": "What your profile means",
+    "color.verde.body":  "Your combination of factors — age and no prior treatments — puts your case in favorable conditions to begin. Available treatments have a strong foundation for profiles like yours.",
+    "color.azul.body":   "Your profile calls for a more personalized protocol, whether due to age, treatment history, or profile type. Ingenes has extensive experience in these cases and specialists are ready to design the right path for you.",
+
+    "next-steps.label": "Recommended next step",
+    "next-steps.text.consult": "Schedule your first consultation with one of our specialists. They will review your full case, request the necessary studies, and define the most appropriate path for you — at no cost and with no commitment.",
+    "next-steps.text.women":   "Schedule your first consultation with one of our specialists. They will assess which of the available options — ROPA Method or donor insemination — is the most appropriate for your specific case.",
+
+    "badge.positive": "Favorable factor",
+    "badge.caution":  "To consider",
+    "badge.strong":   "Key factor",
+    "badge.neutral":  "Neutral",
+
+    "men.title": "Your path has <em>special options</em>",
+    "men.body":  "For male couples and single men, surrogacy is the path available in assisted reproduction. We have specialists who can walk you through the entire process — at no cost and with no commitment.",
+
+    "footer.copy": "© 2026 Ingenes — Instituto Nacional de Genómica. All rights reserved.",
+  }
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  lang: 'es',
+  currentStep: 0,
+  answers: { profile: null, age: null, previous: null, timeline: null }
+};
+
+/* ============================================================
+   i18n
+   ============================================================ */
+function t(key) { return T[state.lang][key] || T['es'][key] || key; }
+
+function applyI18n() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n); if (v) el.textContent = v;
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const v = t(el.dataset.i18nHtml); if (v) el.innerHTML = v;
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const v = t(el.dataset.i18nPlaceholder); if (v) el.placeholder = v;
+  });
+}
+
+function setLang(lang) {
+  state.lang = lang;
+  document.documentElement.lang = lang === 'es' ? 'es-MX' : 'en';
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('is-active', b.dataset.lang === lang));
+  applyI18n();
+  const vis = id => !document.getElementById(id).hidden;
+  if (vis('screen-quiz'))     renderQuizStep();
+  if (vis('screen-results'))  renderResults();
+  if (vis('screen-unlocked')) renderUnlocked();
+}
+
+/* ============================================================
+   QUESTIONS
+   ============================================================ */
+const QUESTIONS = {
+  profile: {
+    key: 'profile', titleKey: 'q.profile.title', cols: 2,
+    options: [
+      { value: 'hetero',       icon: '<div class="profile-icon"><img src="woman.png" alt="mujer"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.hetero' },
+      { value: 'women',        icon: '<div class="profile-icon"><img src="woman.png" alt="mujer"><img src="woman.png" alt="mujer"></div>', labelKey: 'q.profile.women' },
+      { value: 'single-woman', icon: '<div class="profile-icon profile-icon--solo"><img src="woman.png" alt="mujer"></div>', labelKey: 'q.profile.single-woman' },
+      { value: 'men',          icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.men' },
+    ]
+  },
+  age: {
+    key: 'age', titleKey: 'q.age.title', cols: '4',
+    subtitleFn: () => t('q.age.sub.' + (state.answers.profile || 'hetero')),
+    options: [
+      { value: '<30',   icon: '🌱', labelKey: 'q.age.<30' },
+      { value: '30-34', icon: '⭐', labelKey: 'q.age.30-34' },
+      { value: '35-39', icon: '⏳', labelKey: 'q.age.35-39' },
+      { value: '40+',   icon: '💫', labelKey: 'q.age.40+' },
+    ]
+  },
+  previous: {
+    key: 'previous', titleKey: 'q.previous.title', cols: 2,
+    options: [
+      { value: 'none',        icon: '🆕', labelKey: 'q.previous.none' },
+      { value: 'iui',         icon: '💉', labelKey: 'q.previous.iui',         subKey: 'q.previous.iui.sub' },
+      { value: 'ivf-fail',    icon: '🔬', labelKey: 'q.previous.ivf-fail' },
+      { value: 'ivf-success', icon: '🍼', labelKey: 'q.previous.ivf-success', subKey: 'q.previous.ivf-success.sub' },
+    ]
+  },
+  timeline: {
+    key: 'timeline', titleKey: 'q.timeline.title', cols: '3',
+    options: [
+      { value: '<1y',  icon: '🚀', labelKey: 'q.timeline.<1y' },
+      { value: '1-3y', icon: '📅', labelKey: 'q.timeline.1-3y' },
+      { value: '3y+',  icon: '🌱', labelKey: 'q.timeline.3y+' },
+    ]
+  }
+};
+
+/* Maps a specific age number (string or int) to the internal bucket key */
+function getAgeBucket(age) {
+  const n = parseInt(age);
+  if (isNaN(n)) return null;
+  if (n < 30)  return '<30';
+  if (n <= 34) return '30-34';
+  if (n <= 39) return '35-39';
+  return '40+';
+}
+
+function getActiveSteps() {
+  const p = state.answers.profile;
+  const steps = ['profile'];
+  if (!p || p === 'men') return steps;
+  steps.push('age', 'previous', 'timeline');
+  return steps;
+}
+
+/* ============================================================
+   LOGIC
+   ============================================================ */
+function getLeadColor() {
+  const { profile, age, previous } = state.answers;
+  if (!profile) return null;
+  if (profile === 'men') return 'azul';
+  if (!age) return null;
+  const b = getAgeBucket(age);
+  if (b === '35-39' || b === '40+') return 'azul';
+  if ((b === '<30' || b === '30-34') && previous && previous !== 'none') return 'azul';
+  if ((b === '<30' || b === '30-34') && previous === 'none') return 'verde';
+  return null;
+}
+
+function getRecoKey() {
+  const { profile } = state.answers;
+  if (profile === 'women') return 'women';
+  return 'consult'; // hetero + single-woman: no treatment mentioned
+}
+
+function countFactors() {
+  return ['profile','age','previous','timeline'].filter(k => state.answers[k]).length;
+}
+
+/* ============================================================
+   RENDER HELPERS
+   ============================================================ */
+function badgeHTML(color) {
+  if (!color) return '';
+  const label = t('results.badge.' + color);
+  return `<span class="lead-badge lead-badge--${color}">
+    <span class="badge-dot"></span>${label}
+  </span>`;
+}
+
+function recoHeroHTML(recoKey) {
+  return `<div class="reco-hero animate-in">
+    <p class="reco-hero-label">${t('reco.' + recoKey + '.label')}</p>
+    <p class="reco-hero-name" data-i18n-html="">${t('reco.' + recoKey + '.name')}</p>
+    <p class="reco-hero-why">${t('reco.' + recoKey + '.why')}</p>
+  </div>`;
+}
+
+function timelineInsightHTML(tl) {
+  if (!tl) return '';
+  return `<div class="timeline-card animate-in">
+    <span class="timeline-card-icon">${t('timeline.icon')}</span>
+    <div class="timeline-card-body">
+      <p class="timeline-card-label">${t('timeline.label')}</p>
+      <p class="timeline-card-text">${t('timeline.' + tl + '.text')}</p>
+    </div>
+  </div>`;
+}
+
+function factorType(key, value) {
+  if (key === 'age') {
+    const b = getAgeBucket(value);
+    return { '<30':'positive','30-34':'positive','35-39':'caution','40+':'strong' }[b] || 'neutral';
+  }
+  if (key === 'previous') return { 'none':'neutral','iui':'caution','ivf-fail':'strong','ivf-success':'positive' }[value] || 'neutral';
+  if (key === 'timeline') return { '<1y':'caution','1-3y':'neutral','3y+':'neutral' }[value] || 'neutral';
+  return 'neutral';
+}
+
+function factorCardHTML(type, name, value, impact) {
+  return `<div class="factor-card factor-card--${type}">
+    <span class="factor-badge factor-badge--${type}">${t('badge.' + type)}</span>
+    <p class="factor-name">${name}</p>
+    <p class="factor-value">${value}</p>
+    <p class="factor-impact">${impact}</p>
+  </div>`;
+}
+
+function buildFactorCards(includeColorCard, includeNextSteps) {
+  const a = state.answers;
+  const color = getLeadColor();
+  const recoKey = getRecoKey();
+  let html = '';
+
+  if (a.profile) {
+    html += factorCardHTML('neutral', t('factor.profile.name'), t('q.profile.' + a.profile), t('factor.profile.impact'));
+  }
+  if (a.age) {
+    const bucket = getAgeBucket(a.age);
+    html += factorCardHTML(
+      factorType('age', a.age),
+      t('factor.age.name'),
+      a.age + ' ' + t('q.age.unit'),
+      t('factor.age.impact.' + bucket)
+    );
+  }
+  if (a.previous) {
+    html += factorCardHTML(factorType('previous', a.previous), t('factor.previous.name'), t('q.previous.' + a.previous), t('factor.previous.impact.' + a.previous));
+  }
+  if (a.timeline) {
+    html += factorCardHTML(factorType('timeline', a.timeline), t('factor.timeline.name'), t('q.timeline.' + a.timeline), t('factor.timeline.impact.' + a.timeline));
+  }
+  if (includeColorCard) {
+    const bodyKey = color === 'azul' ? 'color.azul.body' : 'color.verde.body';
+    html += `<div class="color-card color-card--azul">
+      <div class="color-card-header">
+        <span class="color-card-title">${t('color.profile.title')}</span>
+      </div>
+      <p class="color-card-body">${t(bodyKey)}</p>
+    </div>`;
+  }
+  if (includeNextSteps) {
+    html += `<div class="next-steps-card">
+      <p class="next-steps-label">${t('next-steps.label')}</p>
+      <p class="next-steps-text">${t('next-steps.text.' + recoKey)}</p>
+    </div>`;
+  }
+  return html;
+}
+
+/* ============================================================
+   SCREENS
+   ============================================================ */
+function showScreen(id) {
+  ['screen-intro','screen-quiz','screen-results','screen-form','screen-unlocked','screen-men']
+    .forEach(s => document.getElementById(s).hidden = s !== id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startQuiz() {
+  state.currentStep = 0;
+  showScreen('screen-quiz');
+  renderQuizStep();
+}
+
+function renderQuizStep() {
+  const steps   = getActiveSteps();
+  const stepKey = steps[state.currentStep];
+
+  if (state.answers.profile === 'men' && state.currentStep >= 1) {
+    showScreen('screen-men'); return;
+  }
+  if (!stepKey) { renderResults(); showScreen('screen-results'); return; }
+
+  const q     = QUESTIONS[stepKey];
+
+  const total = steps.length;
+  const stepPct = Math.round((state.currentStep / total) * 100);
+  document.getElementById('quiz-step-label').textContent =
+    `${t('quiz.step')} ${state.currentStep + 1} ${t('quiz.of')} ${total}`;
+  document.getElementById('quiz-progress-fill').style.width = stepPct + '%';
+
+  /* ── Age: continuous slider ── */
+  if (stepKey === 'age') {
+    const defaultAge = 30;
+    const currentAge = Math.min(55, Math.max(18, parseInt(state.answers.age) || defaultAge));
+    const subtitle   = q.subtitleFn ? q.subtitleFn() : '';
+
+    document.getElementById('quiz-question-area').innerHTML = `<div class="animate-in">
+      <p class="q-title">${t(q.titleKey)}</p>
+      ${subtitle ? `<p class="q-sub">${subtitle}</p>` : ''}
+      <div class="age-card">
+        <div class="age-card-header">
+          <span class="age-card-label">${t('q.age.card.label')}</span>
+          <span class="age-card-value"><strong id="age-num">${currentAge}</strong> ${t('q.age.unit')}</span>
+        </div>
+        <input type="range" id="age-slider" class="age-slider"
+               min="18" max="55" step="1" value="${currentAge}"
+               oninput="updateAgeSliderUI(this.value)" />
+        <div class="age-slider-bounds">
+          <span>18</span>
+          <span>55</span>
+        </div>
+      </div>
+    </div>`;
+
+    state.answers.age = String(currentAge);
+    document.getElementById('btn-back').style.visibility = state.currentStep > 0 ? 'visible' : 'hidden';
+    document.getElementById('btn-next').disabled = false;
+    return;
+  }
+
+  const subtitle = q.subtitleFn ? q.subtitleFn() : '';
+  const colClass = q.cols === '4' ? 'options-grid--4' : q.cols === '3' ? 'options-grid--3' : q.cols === 1 ? 'options-grid--1' : '';
+  const selected = state.answers[q.key];
+
+  document.getElementById('quiz-question-area').innerHTML = `<div class="animate-in">
+    <p class="q-title">${t(q.titleKey)}</p>
+    ${subtitle ? `<p class="q-sub">${subtitle}</p>` : ''}
+    <div class="options-grid ${colClass}">
+      ${q.options.map(o => {
+        const sub = o.subKey ? `<span class="card-sub">${t(o.subKey)}</span>` : '';
+        return `<button type="button" class="option-card ${selected === o.value ? 'is-selected' : ''}"
+          data-value="${o.value}" onclick="selectOption('${q.key}','${o.value}')">
+          <span class="card-icon">${o.icon}</span>
+          <span>${t(o.labelKey)}</span>${sub}
+        </button>`;
+      }).join('')}
+    </div>
+  </div>`;
+
+  document.getElementById('btn-back').style.visibility = state.currentStep > 0 ? 'visible' : 'hidden';
+  document.getElementById('btn-next').disabled = !selected;
+}
+
+function selectOption(key, value) {
+  state.answers[key] = value;
+  document.querySelectorAll('.option-card').forEach(c =>
+    c.classList.toggle('is-selected', c.dataset.value === value));
+  document.getElementById('btn-next').disabled = false;
+
+  if (key === 'profile' && value === 'men') {
+    setTimeout(() => showScreen('screen-men'), 400); return;
+  }
+  setTimeout(() => nextStep(), 380);
+}
+
+function updateAgeSliderUI(val) {
+  const n = parseInt(val);
+  state.answers.age = String(n);
+  const numEl = document.getElementById('age-num');
+  if (numEl) numEl.textContent = n;
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextStep() {
+  const steps = getActiveSteps();
+  if (!state.answers[steps[state.currentStep]]) return;
+  if (state.currentStep < steps.length - 1) {
+    state.currentStep++; renderQuizStep();
+  } else {
+    renderResults(); showScreen('screen-results');
+  }
+}
+
+function prevStep() {
+  if (state.currentStep > 0) { state.currentStep--; renderQuizStep(); }
+  else showScreen('screen-intro');
+}
+
+/* ============================================================
+   RESULTS
+   ============================================================ */
+function renderResults() {
+  const color   = getLeadColor();
+  const recoKey = getRecoKey();
+  const n       = countFactors();
+
+  document.getElementById('results-headline').innerHTML   = t('results.headline.' + recoKey);
+  document.getElementById('reco-hero-wrap').innerHTML     = recoHeroHTML(recoKey);
+  document.getElementById('timeline-insight-wrap').innerHTML = timelineInsightHTML(state.answers.timeline);
+
+  // Lock count badge
+  document.getElementById('lock-count-badge').textContent = `🔍 ${n} ${t('results.lock.count')}`;
+
+  // Blurred factor cards (don't include color card or next steps — those are the reward)
+  document.getElementById('factors-grid').innerHTML = buildFactorCards(false, false);
+
+  document.getElementById('lock-section').classList.remove('is-unlocked');
+}
+
+/* ============================================================
+   FORM
+   ============================================================ */
+function goToForm() { showScreen('screen-form'); }
+
+function submitForm(e) {
+  e.preventDefault();
+  const nameEl  = document.getElementById('cf-name');
+  const emailEl = document.getElementById('cf-email');
+  const phoneEl = document.getElementById('cf-phone');
+  const country = document.getElementById('cf-country').value;
+  let valid = true;
+
+  const ffName = document.getElementById('ff-name');
+  if (nameEl.value.trim().length < 2) { ffName.classList.add('has-error'); valid = false; }
+  else ffName.classList.remove('has-error');
+
+  const ffEmail = document.getElementById('ff-email');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) { ffEmail.classList.add('has-error'); valid = false; }
+  else ffEmail.classList.remove('has-error');
+
+  const ffPhone  = document.getElementById('ff-phone');
+  const errEl    = document.getElementById('phone-error');
+  const digits   = phoneEl.value.replace(/\D/g,'');
+  const needsTen = country === '+52' || country === '+1' || country === '+1ca';
+  const phoneOk  = needsTen ? digits.length === 10 : (digits.length >= 7 && digits.length <= 15);
+  if (!phoneOk) {
+    ffPhone.classList.add('has-error');
+    errEl.textContent = digits.length === 0
+      ? t('form.phone.error')
+      : (needsTen
+          ? (state.lang === 'es' ? 'Ingresa un número de 10 dígitos.' : 'Enter a 10-digit number.')
+          : (state.lang === 'es' ? 'Ingresa entre 7 y 15 dígitos.' : 'Enter between 7–15 digits.'));
+    valid = false;
+  } else ffPhone.classList.remove('has-error');
+
+  if (!valid) return;
+
+  // Lead payload — ready for Airtable
+  const lead = {
+    name:     nameEl.value.trim(),
+    email:    emailEl.value.trim(),
+    phone:    country.replace('ca','') + digits,
+    color:    getLeadColor(),      // 'verde' | 'azul'
+    profile:  state.answers.profile,
+    age:      state.answers.age,
+    previous: state.answers.previous,
+    timeline: state.answers.timeline,
+    reco:     getRecoKey(),
+    lang:     state.lang,
+    ts:       new Date().toISOString(),
+  };
+  // TODO: POST lead to Airtable
+  console.log('Lead captured:', lead);
+
+  renderUnlocked();
+  showScreen('screen-unlocked');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  ['cf-name','cf-email'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function() {
+      this.closest('.form-field').classList.remove('has-error');
+    });
+  });
+  document.getElementById('cf-phone').addEventListener('input', function() {
+    const clean = this.value.replace(/\D/g,'');
+    if (this.value !== clean) this.value = clean;
+    document.getElementById('ff-phone').classList.remove('has-error');
+  });
+});
+
+/* ============================================================
+   UNLOCKED
+   ============================================================ */
+function renderUnlocked() {
+  const color   = getLeadColor();
+  const recoKey = getRecoKey();
+
+  document.getElementById('unlocked-headline').innerHTML      = t('unlocked.headline.' + recoKey);
+  document.getElementById('unlocked-reco-hero').innerHTML     = recoHeroHTML(recoKey);
+  document.getElementById('unlocked-timeline-insight').innerHTML = timelineInsightHTML(state.answers.timeline);
+  document.getElementById('unlocked-factors').innerHTML       = buildFactorCards(true, true);
+
+  document.querySelectorAll('#screen-unlocked [data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n); if (v) el.textContent = v;
+  });
+  document.querySelectorAll('#screen-unlocked [data-i18n-html]').forEach(el => {
+    const v = t(el.dataset.i18nHtml); if (v) el.innerHTML = v;
+  });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => setLang('es'));
+</script>
+</body>
+</html>
