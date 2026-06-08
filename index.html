@@ -796,8 +796,7 @@ const T = {
     "q.profile.hetero":       "Pareja heterosexual",
     "q.profile.women":        "Pareja de mujeres",
     "q.profile.single-woman": "Mujer sola",
-    "q.profile.men-couple":   "Pareja de hombres",
-    "q.profile.single-man":   "Hombre solo",
+    "q.profile.men":          "Pareja de hombres\no hombre solo",
 
     /* Q2 */
     "q.age.title":             "¿Cuántos años tiene la mujer?",
@@ -945,8 +944,7 @@ const T = {
     "q.profile.hetero":       "Heterosexual couple",
     "q.profile.women":        "Female couple",
     "q.profile.single-woman": "Single woman",
-    "q.profile.men-couple":   "Male couple",
-    "q.profile.single-man":   "Single man",
+    "q.profile.men":          "Male couple\nor single man",
 
     "q.age.title":             "How old is the woman?",
     "q.age.sub.hetero":        "The woman's age is the most determinant factor in fertility.",
@@ -1108,13 +1106,12 @@ function setLang(lang) {
    ============================================================ */
 const QUESTIONS = {
   profile: {
-    key: 'profile', titleKey: 'q.profile.title', cols: '2lc',
+    key: 'profile', titleKey: 'q.profile.title', cols: 2,
     options: [
       { value: 'hetero',       icon: '<div class="profile-icon"><img src="woman.png" alt="mujer"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.hetero' },
       { value: 'women',        icon: '<div class="profile-icon"><img src="woman.png" alt="mujer"><img src="woman.png" alt="mujer"></div>', labelKey: 'q.profile.women' },
       { value: 'single-woman', icon: '<div class="profile-icon profile-icon--solo"><img src="woman.png" alt="mujer"></div>', labelKey: 'q.profile.single-woman' },
-      { value: 'men-couple',   icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.men-couple' },
-      { value: 'single-man',   icon: '<div class="profile-icon profile-icon--solo"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.single-man' },
+      { value: 'men',          icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.men' },
     ]
   },
   age: {
@@ -1162,8 +1159,8 @@ function getActiveSteps() {
   const p = state.answers.profile;
   const steps = ['profile'];
   if (!p) return steps;
-  if (p === 'single-man' || p === 'men-couple') {
-    steps.push('age', 'timeline');   // no "previous treatments" for men
+  if (p === 'men') {
+    steps.push('timeline');   // no age, no previous treatments for men
     return steps;
   }
   steps.push('age', 'previous', 'timeline');
@@ -1176,7 +1173,7 @@ function getActiveSteps() {
 function getLeadColor() {
   const { profile, age, previous } = state.answers;
   if (!profile) return null;
-  if (profile === 'single-man' || profile === 'men-couple') return 'azul';
+  if (profile === 'men') return 'azul';
   if (!age) return null;
   const b = getAgeBucket(age);
   if (b === '35-39' || b === '40+') return 'azul';
@@ -1322,37 +1319,8 @@ function renderQuizStep() {
     const profile    = state.answers.profile;
     const currentAge = Math.min(55, Math.max(18, parseInt(state.answers.age) || defaultAge));
 
-    /* Male couple: two sliders */
-    if (profile === 'men-couple') {
-      const currentAgePartner = Math.min(55, Math.max(18, parseInt(state.answers.age_partner) || defaultAge));
-      const ageCard = (idNum, idSlider, labelKey, currentVal, onInput) => `
-        <div class="age-card" style="margin-top:var(--space-3)">
-          <div class="age-card-header">
-            <span class="age-card-label">${t(labelKey)}</span>
-            <span class="age-card-value"><strong id="${idNum}">${currentVal}</strong> ${t('q.age.unit')}</span>
-          </div>
-          <input type="range" id="${idSlider}" class="age-slider"
-                 min="18" max="55" step="1" value="${currentVal}"
-                 oninput="${onInput}" />
-          <div class="age-slider-bounds"><span>18</span><span>55</span></div>
-        </div>`;
-
-      document.getElementById('quiz-question-area').innerHTML = `<div class="animate-in">
-        <p class="q-title">${t('q.age.title.men-couple')}</p>
-        ${ageCard('age-num','age-slider','q.age.card.label',currentAge,'updateAgeSliderUI(this.value)')}
-        ${ageCard('age-partner-num','age-partner-slider','q.age.card.partner',currentAgePartner,'updateAgePartnerSliderUI(this.value)')}
-      </div>`;
-
-      state.answers.age         = String(currentAge);
-      state.answers.age_partner = String(currentAgePartner);
-      document.getElementById('btn-back').style.visibility = 'visible';
-      document.getElementById('btn-next').disabled = false;
-      return;
-    }
-
-    /* Single man: one slider, different title */
-    const ageTitle = profile === 'single-man' ? t('q.age.title.single-man') : t(q.titleKey);
-    const subtitle = (profile === 'single-man') ? '' : (q.subtitleFn ? q.subtitleFn() : '');
+    const ageTitle = t(q.titleKey);
+    const subtitle = q.subtitleFn ? q.subtitleFn() : '';
 
     document.getElementById('quiz-question-area').innerHTML = `<div class="animate-in">
       <p class="q-title">${ageTitle}</p>
@@ -1467,7 +1435,7 @@ function nextStep() {
     state.currentStep++; renderQuizStep();
   } else {
     const p = state.answers.profile;
-    if (p === 'single-man' || p === 'men-couple') {
+    if (p === 'men') {
       showScreen('screen-men');
     } else {
       renderResults(); showScreen('screen-results');
