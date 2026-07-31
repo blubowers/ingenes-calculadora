@@ -1346,31 +1346,6 @@ function renderQuizStep() {
   }
 
   /* ── Timeline: 3-position snap slider ── */
-  if (stepKey === 'timeline') {
-    const currentIdx = Math.max(0, TIMELINE_VALUES.indexOf(state.answers.timeline));
-
-    document.getElementById('quiz-question-area').innerHTML = `<div class="animate-in">
-      <p class="q-title">${t(q.titleKey)}</p>
-      <div class="age-card">
-        <div class="age-card-header">
-          <span class="age-card-label">${t('q.timeline.card.label')}</span>
-          <span class="timeline-card-value" id="timeline-card-value">${t('q.timeline.' + TIMELINE_VALUES[currentIdx])}</span>
-        </div>
-        <input type="range" id="timeline-slider" class="age-slider"
-               min="0" max="2" step="1" value="${currentIdx}"
-               oninput="updateTimelineSliderUI(this.value)" />
-        <div class="timeline-slider-labels">
-          ${TIMELINE_VALUES.map((v, i) => `<span class="${i === currentIdx ? 'active' : ''}"
-            onclick="document.getElementById('timeline-slider').value=${i};updateTimelineSliderUI(${i})">${t('q.timeline.' + v)}</span>`).join('')}
-        </div>
-      </div>
-    </div>`;
-
-    state.answers.timeline = TIMELINE_VALUES[currentIdx];
-    document.getElementById('btn-back').style.visibility = 'visible';
-    document.getElementById('btn-next').disabled = false;
-    return;
-  }
 
   const subtitle = q.subtitleFn ? q.subtitleFn() : '';
   const colClass = q.cols === '4' ? 'options-grid--4' : q.cols === '3' ? 'options-grid--3' : q.cols === '2lc' ? 'options-grid--2lc' : q.cols === 1 ? 'options-grid--1' : '';
