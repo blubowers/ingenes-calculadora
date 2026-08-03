@@ -781,11 +781,11 @@ const T = {
   es: {
     "intro.eyebrow":    "Análisis de Fertilidad",
     "intro.title":      "Descubre el camino hacia <em>tu bebé</em>",
-    "intro.lead":       "Responde 4 preguntas y obtén un análisis personalizado basado en tu perfil.",
+    "intro.lead":       "Responde 4 preguntas y descubre qué opciones existen para tu caso — y cuál podría ser tu siguiente paso concreto.",
     "intro.pill1":      "Basado en criterios clínicos",
     "intro.pill2":      "Te toma solo 2 minutos",
     "intro.pill3":      "100% confidencial",
-    "intro.cta":        "Comenzar ahora →",
+    "intro.cta":        "Ver qué opciones tengo →",
     "intro.disclaimer": "Esta herramienta ofrece orientación general. No constituye diagnóstico médico ni promesa de resultado.",
 
     "quiz.back": "Anterior",
@@ -794,7 +794,7 @@ const T = {
     "quiz.of":   "de",
 
     /* Q1 */
-    "q.profile.title":        "¿Cuál es tu sexo biológico y el de tu pareja?",
+    "q.profile.title":        "¿Cuál describe mejor tu situación?",
     "q.profile.hetero":       "Pareja heterosexual",
     "q.profile.women":        "Pareja de mujeres",
     "q.profile.single-woman": "Mujer soltera",
@@ -802,9 +802,9 @@ const T = {
 
     /* Q2 */
     "q.age.title":             "¿Cuántos años tiene la mujer?",
-    "q.age.sub.hetero":        "La edad de la mujer es el factor más determinante en fertilidad.",
+    "q.age.sub.hetero":        "Esto nos ayuda a entender mejor tu perfil y las opciones disponibles.",
     "q.age.sub.women":         "Usa la edad de quien llevará el embarazo.",
-    "q.age.sub.single-woman":  "Tu edad es el factor más determinante.",
+    "q.age.sub.single-woman":  "Esto nos ayuda a entender mejor tu perfil y las opciones disponibles.",
     "q.age.card.label":       "Tu edad",
     "q.age.card.partner":     "Edad de tu pareja",
     "q.age.unit":             "años",
@@ -817,10 +817,11 @@ const T = {
 
     /* Q3 */
     "q.previous.title":           "¿Han tenido tratamientos de fertilidad antes?",
+    "q.previous.title.single":    "¿Has tenido tratamientos de fertilidad antes?",
     "q.previous.none":            "No, sería el primero",
     "q.previous.iui":             "Sí, inseminaciones",
-    "q.previous.iui.sub":         "Sin éxito",
-    "q.previous.ivf-fail":        "Sí, FIV sin éxito",
+    "q.previous.iui.sub":         "Sin resultado todavía",
+    "q.previous.ivf-fail":        "Sí, FIV — sin resultado todavía",
     "q.previous.ivf-success":     "Sí, FIV exitosa",
     "q.previous.ivf-success.sub": "Buscamos otro bebé",
 
@@ -839,7 +840,7 @@ const T = {
     "results.headline.women":   "Tu perfil tiene <em>opciones claras</em> disponibles",
 
     /* Treatment recommendations */
-    "reco.consult.label": "Tu siguiente paso",
+    "reco.consult.label": "Lo que recomendamos para tu perfil",
     "reco.consult.name":  "Primera consulta con un especialista",
     "reco.consult.why":   "Cada caso es único. Los factores de tu perfil determinarán el tratamiento más adecuado — y eso solo puede definirlo un especialista tras evaluarte de forma personalizada.",
 
@@ -857,7 +858,7 @@ const T = {
     /* Lock */
     "results.lock.count":   "factores analizados en tu perfil",
     "results.lock.heading": "Análisis detallado de tu perfil",
-    "results.lock.sub":     "Ingresa tus datos para ver el desglose de cada factor y la ruta recomendada para tu caso.",
+    "results.lock.sub":     "Tu perfil ya está calculado. Ingresa tus datos para ver exactamente en qué punto estás y qué opciones concretas existen para tu caso.",
     "results.lock.cta":     "Ver mi análisis completo →",
     "results.disclaimer":   "Orientación general basada en criterios clínicos. Cada caso es único; un especialista evaluará tu situación concreta.",
 
@@ -882,7 +883,7 @@ const T = {
     "unlocked.headline.consult": "Tu análisis completo — <em>lo que encontramos en tu perfil</em>",
     "unlocked.headline.women":   "Tu análisis completo — <em>opciones para tu perfil</em>",
     "unlocked.cta.title":        "¿Listo para dar el <em>siguiente paso</em>?",
-    "unlocked.cta.sub":          "Un especialista de Ingenes revisará tu perfil y te orientará sin costo ni compromiso.",
+    "unlocked.cta.sub":          "Un especialista de Ingenes revisará tu análisis y te contactará para orientarte — sin compromiso.",
     "unlocked.cta.btn":          "Hablar con un especialista →",
 
     /* Factor cards */
@@ -892,14 +893,14 @@ const T = {
     "factor.age.name":             "Edad de la mujer",
     "factor.age.impact.<30":       "Menos de 30 años — rango de edad óptimo para tratamientos de fertilidad.",
     "factor.age.impact.30-34":     "30–34 años — rango ideal con buena respuesta a tratamientos.",
-    "factor.age.impact.35-39":     "35–39 años — la reserva ovárica y calidad de óvulos comienzan a disminuir con la edad.",
-    "factor.age.impact.40+":       "40 o más años — se recomienda evaluación especializada; pueden existir alternativas muy efectivas.",
+    "factor.age.impact.35-39":     "35–39 años — una evaluación temprana permite diseñar un plan antes de que la edad marque diferencia.",
+    "factor.age.impact.40+":       "40 o más años — se recomienda evaluación especializada. Existen alternativas con altas tasas de éxito que vale la pena explorar.",
 
     "factor.previous.name":                  "Tratamientos previos",
     "factor.previous.impact.none":           "Sin historial de tratamientos — punto de partida limpio para evaluar opciones.",
-    "factor.previous.impact.iui":            "Inseminaciones previas sin éxito — indica que puede existir un factor que la inseminación no resuelve.",
-    "factor.previous.impact.ivf-fail":       "FIV previa sin éxito — el análisis del ciclo anterior es clave para el siguiente protocolo.",
-    "factor.previous.impact.ivf-success":    "FIV exitosa previa — fertilidad con tratamiento demostrada.",
+    "factor.previous.impact.iui":            "Inseminaciones previas sin resultado — hay factores que la inseminación sola no resuelve. FIV u otras opciones pueden ser el siguiente paso.",
+    "factor.previous.impact.ivf-fail":       "FIV previa sin resultado — el análisis del ciclo anterior es clave para el siguiente protocolo.",
+    "factor.previous.impact.ivf-success":    "FIV exitosa previa — ya sabes que el tratamiento funciona para ti. El objetivo ahora es aplicar ese aprendizaje a este nuevo ciclo.",
 
     "factor.timeline.name":        "Horizonte de tiempo",
     "factor.timeline.impact.<1y":  "Meta en menos de 1 año — conviene actuar pronto para alinear tiempos.",
@@ -922,7 +923,7 @@ const T = {
     "badge.neutral":  "Neutral",
 
     "men.title": "Tu camino tiene <em>opciones especiales</em>",
-    "men.body":  "Para parejas de hombres y hombres solos, la subrogación es la vía disponible en reproducción asistida. Contamos con especialistas que pueden orientarte sobre todo el proceso — sin costo ni compromiso.",
+    "men.body":  "Para parejas de hombres y hombres solos, la subrogación es la vía disponible en reproducción asistida. Contamos con especialistas que pueden orientarte sobre todo el proceso — sin compromisos, solo información.",
 
     "footer.copy": "© 2026 Ingenes Instituto Nacional de Genómica. Todos los derechos reservados.",
   },
@@ -930,11 +931,11 @@ const T = {
   en: {
     "intro.eyebrow":    "Fertility Analysis",
     "intro.title":      "Discover the path to <em>your baby</em>",
-    "intro.lead":       "Answer 4 questions and get a personalized analysis based on your profile.",
+    "intro.lead":       "Answer 4 questions and discover what options exist for your case — and what your next concrete step could be.",
     "intro.pill1":      "Based on clinical criteria",
     "intro.pill2":      "Takes only 2 minutes",
     "intro.pill3":      "100% confidential",
-    "intro.cta":        "Start now →",
+    "intro.cta":        "See my options →",
     "intro.disclaimer": "This tool provides general guidance. It is not a medical diagnosis or a promise of outcome.",
 
     "quiz.back": "Back",
@@ -942,16 +943,16 @@ const T = {
     "quiz.step": "Question",
     "quiz.of":   "of",
 
-    "q.profile.title":        "What is your biological sex and your partner's?",
+    "q.profile.title":        "Which best describes your situation?",
     "q.profile.hetero":       "Heterosexual couple",
     "q.profile.women":        "Female couple",
     "q.profile.single-woman": "Single woman",
     "q.profile.men":          "Male couple\nor single man",
 
     "q.age.title":             "How old is the woman?",
-    "q.age.sub.hetero":        "The woman's age is the most determinant factor in fertility.",
+    "q.age.sub.hetero":        "This helps us better understand your profile and the options available.",
     "q.age.sub.women":         "Use the age of the woman who will carry the pregnancy.",
-    "q.age.sub.single-woman":  "Your age is the most determinant factor.",
+    "q.age.sub.single-woman":  "This helps us better understand your profile and the options available.",
     "q.age.card.label":       "Your age",
     "q.age.card.partner":     "Your partner's age",
     "q.age.unit":             "years",
@@ -963,10 +964,11 @@ const T = {
     "q.age.40+":   "40 or older",
 
     "q.previous.title":           "Have you had any fertility treatments before?",
+    "q.previous.title.single":    "Have you had any fertility treatments before?",
     "q.previous.none":            "No, this would be the first",
     "q.previous.iui":             "Yes, IUI",
-    "q.previous.iui.sub":         "Without success",
-    "q.previous.ivf-fail":        "Yes, IVF without success",
+    "q.previous.iui.sub":         "No result yet",
+    "q.previous.ivf-fail":        "Yes, IVF — no result yet",
     "q.previous.ivf-success":     "Yes, successful IVF",
     "q.previous.ivf-success.sub": "We want another baby",
 
@@ -982,7 +984,7 @@ const T = {
     "results.headline.consult": "Your profile has factors <em>worth knowing about</em>",
     "results.headline.women":   "Your profile has <em>clear options</em> available",
 
-    "reco.consult.label": "Your next step",
+    "reco.consult.label": "What we recommend for your profile",
     "reco.consult.name":  "First consultation with a specialist",
     "reco.consult.why":   "Every case is unique. The factors in your profile will determine the most appropriate treatment — and only a specialist can define that after a personalized evaluation.",
 
@@ -998,7 +1000,7 @@ const T = {
 
     "results.lock.count":   "factors analyzed in your profile",
     "results.lock.heading": "Detailed profile analysis",
-    "results.lock.sub":     "Enter your details to see the breakdown of each factor and the recommended path for your case.",
+    "results.lock.sub":     "Your profile is already calculated. Enter your details to see exactly where you stand and what specific options exist for your case.",
     "results.lock.cta":     "See my full analysis →",
     "results.disclaimer":   "General guidance based on clinical criteria. Each case is unique; a specialist will assess your specific situation.",
 
@@ -1021,7 +1023,7 @@ const T = {
     "unlocked.headline.consult": "Your full analysis — <em>what we found in your profile</em>",
     "unlocked.headline.women":   "Your full analysis — <em>options for your profile</em>",
     "unlocked.cta.title":        "Ready to take the <em>next step</em>?",
-    "unlocked.cta.sub":          "An Ingenes specialist will review your profile and guide you at no cost and with no commitment.",
+    "unlocked.cta.sub":          "An Ingenes specialist will review your analysis and contact you to guide you — no commitment required.",
     "unlocked.cta.btn":          "Speak with a specialist →",
 
     "factor.profile.name":   "Family profile",
@@ -1030,14 +1032,14 @@ const T = {
     "factor.age.name":             "Woman's age",
     "factor.age.impact.<30":       "Under 30 — optimal age range for fertility treatments.",
     "factor.age.impact.30-34":     "30–34 — ideal range with good response to treatments.",
-    "factor.age.impact.35-39":     "35–39 — ovarian reserve and egg quality begin to decline with age.",
-    "factor.age.impact.40+":       "40 or older — specialized evaluation recommended; very effective alternatives may exist.",
+    "factor.age.impact.35-39":     "35–39 — an early evaluation allows designing a plan before age becomes a deciding factor.",
+    "factor.age.impact.40+":       "40 or older — specialized evaluation is recommended. Effective alternatives with high success rates exist and are worth exploring.",
 
     "factor.previous.name":               "Previous treatments",
     "factor.previous.impact.none":        "No treatment history — a clean starting point to evaluate options.",
-    "factor.previous.impact.iui":         "Prior failed IUI — suggests a factor that insemination alone may not resolve.",
-    "factor.previous.impact.ivf-fail":    "Prior failed IVF — analysis of the previous cycle is key for the next protocol.",
-    "factor.previous.impact.ivf-success": "Prior successful IVF — demonstrated fertility with treatment.",
+    "factor.previous.impact.iui":         "Prior IUI without result — there are factors that IUI alone does not resolve. IVF or other options may be the logical next step.",
+    "factor.previous.impact.ivf-fail":    "Prior IVF without result — analysis of the previous cycle is key for the next protocol.",
+    "factor.previous.impact.ivf-success": "Prior successful IVF — you already know treatment works for you. The goal now is to apply that learning to this new cycle.",
 
     "factor.timeline.name":        "Time horizon",
     "factor.timeline.impact.<1y":  "Goal within 1 year — acting soon helps align timing.",
@@ -1059,7 +1061,7 @@ const T = {
     "badge.neutral":  "Neutral",
 
     "men.title": "Your path has <em>special options</em>",
-    "men.body":  "For male couples and single men, surrogacy is the path available in assisted reproduction. We have specialists who can walk you through the entire process — at no cost and with no commitment.",
+    "men.body":  "For male couples and single men, surrogacy is the path available in assisted reproduction. We have specialists who can walk you through the entire process — no commitment, just information.",
 
     "footer.copy": "© 2026 Ingenes — Instituto Nacional de Genómica. All rights reserved.",
   }
@@ -1127,7 +1129,7 @@ const QUESTIONS = {
     ]
   },
   previous: {
-    key: 'previous', titleKey: 'q.previous.title', cols: 2,
+    key: 'previous', titleFn: () => t(state.answers.profile === 'single-woman' ? 'q.previous.title.single' : 'q.previous.title'), cols: 2,
     options: [
       { value: 'none',        icon: '🆕', labelKey: 'q.previous.none' },
       { value: 'iui',         icon: '💉', labelKey: 'q.previous.iui',         subKey: 'q.previous.iui.sub' },
@@ -1350,9 +1352,10 @@ function renderQuizStep() {
   const subtitle = q.subtitleFn ? q.subtitleFn() : '';
   const colClass = q.cols === '4' ? 'options-grid--4' : q.cols === '3' ? 'options-grid--3' : q.cols === '2lc' ? 'options-grid--2lc' : q.cols === 1 ? 'options-grid--1' : '';
   const selected = state.answers[q.key];
+  const questionTitle = q.titleFn ? q.titleFn() : t(q.titleKey);
 
   document.getElementById('quiz-question-area').innerHTML = `<div class="animate-in">
-    <p class="q-title">${t(q.titleKey)}</p>
+    <p class="q-title">${questionTitle}</p>
     ${subtitle ? `<p class="q-sub">${subtitle}</p>` : ''}
     <div class="options-grid ${colClass}">
       ${q.options.map(o => {
