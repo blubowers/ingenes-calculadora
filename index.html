@@ -638,26 +638,23 @@ button { font-family: inherit; }
 <!-- INTRO -->
 <section id="screen-intro" class="screen">
   <div class="container">
-    <div class="intro-layout animate-in">
-      <div class="intro-content">
-        <h1 class="intro-title" data-i18n-html="intro.title">
-          Descubre el camino hacia <em>tu bebé</em>
-        </h1>
-        <p class="intro-lead" data-i18n="intro.lead">
-          Responde 4 preguntas y obtén un análisis personalizado basado en tu perfil.
-        </p>
-        <div class="trust-pills">
-          <span class="trust-pill">⏱ <span data-i18n="intro.pill2">2 minutos</span></span>
-          <span class="trust-pill">🔒 <span data-i18n="intro.pill3">100% confidencial</span></span>
-        </div>
-        <button class="btn-primary" onclick="startQuiz()" style="font-size:1.1rem;padding:.9rem 2.4rem;">
-          <span data-i18n="intro.cta">Comenzar ahora →</span>
-        </button>
-        <p class="disclaimer" style="margin-top:var(--space-4)" data-i18n="intro.disclaimer">
-          Esta herramienta ofrece orientación general. No constituye diagnóstico médico ni promesa de resultado.
-        </p>
+    <div class="intro-wrap animate-in">
+      <h1 class="intro-title" data-i18n-html="intro.title">
+        Descubre el camino hacia <em>tu bebé</em>
+      </h1>
+      <p class="intro-lead" data-i18n="intro.lead">
+        Responde 4 preguntas y obtén un análisis personalizado basado en tu perfil.
+      </p>
+      <div class="trust-pills">
+        <span class="trust-pill">⏱ <span data-i18n="intro.pill2">2 minutos</span></span>
+        <span class="trust-pill">🔒 <span data-i18n="intro.pill3">100% confidencial</span></span>
       </div>
-      <img src="images/sara-jacobo.jpg" class="intro-hero-img" alt="" aria-hidden="true" loading="eager">
+      <button class="btn-primary" onclick="startQuiz()" style="font-size:1.1rem;padding:.9rem 2.4rem;">
+        <span data-i18n="intro.cta">Comenzar ahora →</span>
+      </button>
+      <p class="disclaimer" style="margin-top:var(--space-4)" data-i18n="intro.disclaimer">
+        Esta herramienta ofrece orientación general. No constituye diagnóstico médico ni promesa de resultado.
+      </p>
     </div>
   </div>
 </section>
@@ -704,7 +701,6 @@ button { font-family: inherit; }
         <div class="factors-grid" id="factors-grid"></div>
       </div>
       <div class="lock-overlay">
-        <img src="images/lab-fiv.jpg" class="lock-lab-img" alt="" aria-hidden="true" loading="lazy">
         <div class="lock-icon">🔍</div>
         <div class="lock-count" id="lock-count-badge"></div>
         <h3 class="lock-heading" data-i18n="results.lock.heading">Análisis detallado de tu perfil</h3>
@@ -821,7 +817,7 @@ button { font-family: inherit; }
 
 <footer class="site-footer">
   <div class="container">
-    <p data-i18n="footer.copy">© 2026 Ingenes Instituto Nacional de Genómica. Todos los derechos reservados.</p>
+    <p data-i18n="footer.copy">© 2026 Instituto Ingenes. Todos los derechos reservados.</p>
   </div>
 </footer>
 
@@ -1019,7 +1015,7 @@ const T = {
     "men.title": "Tu camino tiene <em>opciones especiales</em>",
     "men.body":  "Para parejas de hombres y hombres solos, la subrogación es la vía disponible en reproducción asistida. Contamos con especialistas que pueden orientarte sobre todo el proceso — sin compromisos, solo información.",
 
-    "footer.copy": "© 2026 Ingenes Instituto Nacional de Genómica. Todos los derechos reservados.",
+    "footer.copy": "© 2026 Instituto Ingenes. Todos los derechos reservados.",
   },
 
   en: {
@@ -1199,7 +1195,7 @@ const T = {
     "men.title": "Your path has <em>special options</em>",
     "men.body":  "For male couples and single men, surrogacy is the path available in assisted reproduction. We have specialists who can walk you through the entire process — no commitment, just information.",
 
-    "footer.copy": "© 2026 Ingenes — Instituto Nacional de Genómica. All rights reserved.",
+    "footer.copy": "© 2026 Instituto Ingenes. All rights reserved.",
   }
 };
 
