@@ -734,10 +734,10 @@ button { font-family: inherit; }
     <div class="factors-grid" id="unlocked-factors" style="margin-top:var(--space-5);"></div>
 
     <div class="consult-card animate-in" style="margin-top:var(--space-6);">
-      <p class="consult-title" data-i18n-html="unlocked.cta.title">¿Listo para dar el <em>siguiente paso</em>?</p>
-      <p class="consult-sub" data-i18n="unlocked.cta.sub">Un especialista de Ingenes revisará tu perfil y te orientará sin costo ni compromiso.</p>
+      <p class="consult-title" id="consult-card-title"></p>
+      <p class="consult-sub" id="consult-card-sub"></p>
       <a href="https://go.ingenes.com/landing?campaign=organic&medium=lead_magnet&landing=analisis&region=general" target="_blank" rel="noopener" class="btn-accent">
-        <span data-i18n="unlocked.cta.btn">Hablar con un especialista →</span>
+        <span id="consult-card-btn"></span>
       </a>
     </div>
 
@@ -757,10 +757,10 @@ button { font-family: inherit; }
         Para perfiles masculinos, los tratamientos involucran tecnologías reproductivas especializadas. Un especialista de Ingenes puede orientarte sin costo ni compromiso.
       </p>
       <div class="consult-card" style="max-width:440px;margin:0 auto;">
-        <p class="consult-title" data-i18n-html="unlocked.cta.title">¿Listo para dar el <em>siguiente paso</em>?</p>
-        <p class="consult-sub" data-i18n="unlocked.cta.sub">Un especialista de Ingenes revisará tu perfil y te orientará sin costo ni compromiso.</p>
+        <p class="consult-title" data-i18n-html="consult.men.title"></p>
+        <p class="consult-sub" data-i18n="consult.men.sub"></p>
         <a href="https://go.ingenes.com/landing?campaign=organic&medium=lead_magnet&landing=analisis&region=general" target="_blank" rel="noopener" class="btn-accent">
-          <span data-i18n="unlocked.cta.btn">Hablar con un especialista →</span>
+          <span data-i18n="consult.men.btn"></span>
         </a>
       </div>
     </div>
@@ -885,6 +885,48 @@ const T = {
     "unlocked.cta.title":        "¿Listo para dar el <em>siguiente paso</em>?",
     "unlocked.cta.sub":          "Un especialista de Ingenes revisará tu análisis y te contactará para orientarte — sin compromiso.",
     "unlocked.cta.btn":          "Hablar con un especialista →",
+
+    /* Consult card personalizada por segmento */
+    "consult.verde_lt1y.title":       "Tu momento para empezar <em>ya llegó</em>",
+    "consult.verde_lt1y.sub":         "Tienes menos de 35 años y aún no has pasado por ningún tratamiento — una combinación que trabaja claramente a tu favor. En una sola consulta, un especialista revisa tu perfil completo y te explica qué camino tiene más sentido para ti.",
+    "consult.verde_lt1y.btn":         "Agendar mi consulta →",
+
+    "consult.verde_1a3y.title":       "Prepararse antes de empezar <em>cambia todo</em>",
+    "consult.verde_1a3y.sub":         "Piensas buscar un embarazo en los próximos uno a tres años. A tu edad, el tiempo sigue a tu favor — y una consulta ahora te da el panorama completo para cuando decidas dar el paso. Mejor entender tu perfil hoy que improvisar después.",
+    "consult.verde_1a3y.btn":         "Hablar con un especialista →",
+
+    "consult.verde_gt3y.title":       "Saber dónde estás hoy <em>es una ventaja real</em>",
+    "consult.verde_gt3y.sub":         "No hay prisa, y está bien. Pero conocer tu reserva ovárica y tu perfil reproductivo a tu edad es información valiosa — tanto si actúas pronto como si esperas. Una consulta ahora es saber con qué cuentas cuando llegue el momento.",
+    "consult.verde_gt3y.btn":         "Conocer mi perfil con un especialista →",
+
+    "consult.joven_trat.title":       "Lo que ya intentaste es información, <em>no un límite</em>",
+    "consult.joven_trat.sub":         "Que hayas pasado por tratamientos previos no cierra puertas — las abre. Tu historial le da a un especialista datos concretos para encontrar el enfoque que antes faltó. El siguiente paso es un análisis más profundo, y eso empieza en consulta.",
+    "consult.joven_trat.btn":         "Que revisen mi caso →",
+
+    "consult.ivf_success.title":      "Ya sabes que funciona — <em>ahora es trazar el camino</em>",
+    "consult.ivf_success.sub":        "Tu cuerpo ya respondió a un tratamiento de FIV. Esa experiencia es valiosa: tu especialista puede usarla para diseñar el camino más eficiente hacia tu siguiente bebé. En consulta revisan tu historial previo y tu situación actual.",
+    "consult.ivf_success.btn":        "Hablar sobre mi siguiente ciclo →",
+
+    "consult.madura_3539.title":      "Entre los 35 y 39, actuar pronto <em>tiene sentido real</em>",
+    "consult.madura_3539.sub":        "En esta etapa, la reserva ovárica puede cambiar más rápido de lo esperado. Una consulta no es apresurarse — es entender exactamente dónde estás y qué opciones tienes mientras la ventana sigue abierta.",
+    "consult.madura_3539.btn":        "Ver mis opciones con un especialista →",
+
+    "consult.madura_3539_trat.title": "Con tu historial, el análisis <em>necesita ir más a fondo</em>",
+    "consult.madura_3539_trat.sub":   "Tienes entre 35 y 39 años y ya tienes experiencia con tratamientos. Esa combinación merece una revisión personalizada, no genérica. Un especialista puede leer tu historial completo y recomendarte el enfoque que más sentido tiene para tu momento actual.",
+    "consult.madura_3539_trat.btn":   "Hablar con un especialista sobre mi caso →",
+
+    "consult.madura_40plus.title":    "Hay más caminos <em>de los que probablemente imaginas</em>",
+    "consult.madura_40plus.sub":      "A partir de los 40, el tratamiento puede requerir un enfoque más específico — y eso es exactamente lo que una consulta personalizada permite definir. Muchas personas con un perfil como el tuyo han formado su familia con el protocolo correcto.",
+    "consult.madura_40plus.sub_extra":" Tu historial previo no se descarta — un especialista sabe cómo leerlo a tu favor.",
+    "consult.madura_40plus.btn":      "Hablar con un especialista →",
+
+    "consult.women.title":            "Su camino tiene opciones claras — <em>el especialista define cuál</em>",
+    "consult.women.sub":              "ROPA e inseminación con donante son las dos rutas principales para parejas de mujeres, y cada una tiene ventajas según el perfil de las dos. En consulta, el especialista revisa la situación de ambas y recomienda la opción más adecuada para su caso.",
+    "consult.women.btn":              "Agendar consulta para las dos →",
+
+    "consult.men.title":              "El primer paso es <em>entender el proceso completo</em>",
+    "consult.men.sub":                "La gestación subrogada involucra etapas médicas, legales y logísticas. Antes de tomar cualquier decisión, una consulta con un especialista te da el mapa completo del proceso — sin compromisos, con toda la información sobre lo que implica cada paso.",
+    "consult.men.btn":                "Entender el proceso con un especialista →",
 
     /* Factor cards */
     "factor.profile.name":   "Perfil familiar",
@@ -1026,6 +1068,48 @@ const T = {
     "unlocked.cta.sub":          "An Ingenes specialist will review your analysis and contact you to guide you — no commitment required.",
     "unlocked.cta.btn":          "Speak with a specialist →",
 
+    /* Personalized consult card by segment */
+    "consult.verde_lt1y.title":       "Your moment to start <em>has come</em>",
+    "consult.verde_lt1y.sub":         "You're under 35 and haven't had any previous treatments — a combination that clearly works in your favor. In a single consultation, a specialist reviews your full profile and explains which path makes the most sense for you.",
+    "consult.verde_lt1y.btn":         "Schedule my consultation →",
+
+    "consult.verde_1a3y.title":       "Preparing before you start <em>changes everything</em>",
+    "consult.verde_1a3y.sub":         "You're planning to try in the next one to three years. At your age, time is still on your side — and a consultation now gives you the full picture for when you decide to take the step. Better to understand your profile today than to improvise later.",
+    "consult.verde_1a3y.btn":         "Talk to a specialist →",
+
+    "consult.verde_gt3y.title":       "Knowing where you stand today <em>is a real advantage</em>",
+    "consult.verde_gt3y.sub":         "No rush, and that's fine. But knowing your ovarian reserve and reproductive profile at your age is valuable information — whether you act soon or wait. A consultation now means knowing what you have when the time comes.",
+    "consult.verde_gt3y.btn":         "Discover my profile with a specialist →",
+
+    "consult.joven_trat.title":       "What you've already tried is information, <em>not a limit</em>",
+    "consult.joven_trat.sub":         "Having gone through previous treatments doesn't close doors — it opens them. Your history gives a specialist concrete data to find the approach that was missing before. The next step is a deeper analysis, and that starts in a consultation.",
+    "consult.joven_trat.btn":         "Have my case reviewed in detail →",
+
+    "consult.ivf_success.title":      "You know it works — <em>now it's about charting the path</em>",
+    "consult.ivf_success.sub":        "Your body already responded to IVF treatment. That experience is valuable: your specialist can use it to design the most efficient path to your next baby. In a consultation they review your previous history and your current situation.",
+    "consult.ivf_success.btn":        "Talk about my next cycle →",
+
+    "consult.madura_3539.title":      "Between 35 and 39, acting soon <em>makes real sense</em>",
+    "consult.madura_3539.sub":        "At this stage, ovarian reserve can change faster than expected. A consultation isn't rushing — it's understanding exactly where you stand and what options you have while the window is still open.",
+    "consult.madura_3539.btn":        "See my options with a specialist →",
+
+    "consult.madura_3539_trat.title": "With your history, the analysis <em>needs to go deeper</em>",
+    "consult.madura_3539_trat.sub":   "You're between 35 and 39 and already have experience with treatments. That combination deserves a personalized review, not a generic one. A specialist can read your full history and recommend the approach that makes the most sense for your current situation.",
+    "consult.madura_3539_trat.btn":   "Talk to a specialist about my case →",
+
+    "consult.madura_40plus.title":    "There are more paths <em>than you probably imagine</em>",
+    "consult.madura_40plus.sub":      "After 40, treatment may require a more specific approach — and that's exactly what a personalized consultation allows to define. Many people with a profile like yours have built their family with the right protocol.",
+    "consult.madura_40plus.sub_extra":" Your previous history isn't dismissed — a specialist knows how to read it in your favor.",
+    "consult.madura_40plus.btn":      "Talk to a specialist →",
+
+    "consult.women.title":            "Your path has clear options — <em>the specialist defines which one</em>",
+    "consult.women.sub":              "ROPA and donor insemination are the two main routes for female couples, and each has advantages depending on both partners' profiles. In a consultation, the specialist reviews both situations and recommends the most appropriate option for your specific case.",
+    "consult.women.btn":              "Schedule a consultation for both →",
+
+    "consult.men.title":              "The first step is <em>understanding the full process</em>",
+    "consult.men.sub":                "Surrogacy involves medical, legal, and logistical stages. Before making any decision, a consultation with a specialist gives you the complete map of the process — no commitment, just full information on what each step involves.",
+    "consult.men.btn":                "Understand the process with a specialist →",
+
     "factor.profile.name":   "Family profile",
     "factor.profile.impact": "Determines the most appropriate treatment type for your situation.",
 
@@ -1157,6 +1241,18 @@ function getAgeBucket(age) {
   if (n <= 34) return '30-34';
   if (n <= 39) return '35-39';
   return '40+';
+}
+
+function getConsultSegment() {
+  const a = state.answers;
+  const bucket = getAgeBucket(a.age);
+  if (a.profile === 'women')        return 'women';
+  if (a.previous === 'ivf-success') return 'ivf_success';
+  if (bucket === '40+')             return 'madura_40plus';
+  if (bucket === '35-39')           return a.previous !== 'none' ? 'madura_3539_trat' : 'madura_3539';
+  if (a.previous === 'iui' || a.previous === 'ivf-fail') return 'joven_trat';
+  const timelineMap = { '<1y': 'verde_lt1y', '1-3y': 'verde_1a3y', '3y+': 'verde_gt3y' };
+  return timelineMap[a.timeline] || 'verde_1a3y';
 }
 
 function getActiveSteps() {
@@ -1540,6 +1636,15 @@ function renderUnlocked() {
   document.querySelectorAll('#screen-unlocked [data-i18n-html]').forEach(el => {
     const v = t(el.dataset.i18nHtml); if (v) el.innerHTML = v;
   });
+
+  /* Personalized consult card */
+  const seg = getConsultSegment();
+  const hasPrevTreat = ['iui', 'ivf-fail'].includes(state.answers.previous);
+  let consultSub = t('consult.' + seg + '.sub');
+  if (seg === 'madura_40plus' && hasPrevTreat) consultSub += t('consult.madura_40plus.sub_extra');
+  document.getElementById('consult-card-title').innerHTML = t('consult.' + seg + '.title');
+  document.getElementById('consult-card-sub').textContent = consultSub;
+  document.getElementById('consult-card-btn').textContent = t('consult.' + seg + '.btn');
 }
 
 /* ============================================================
