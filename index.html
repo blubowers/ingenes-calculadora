@@ -168,6 +168,10 @@ button { font-family: inherit; }
 .trust-pill svg { width: 1em; height: 1em; flex-shrink: 0; }
 .lock-icon svg  { width: 2rem;  height: 2rem; }
 .special-icon svg { width: 3rem; height: 3rem; }
+.opt-icon-svg {
+  display: block; margin: 0 auto var(--space-2);
+  width: 1.6rem; height: 1.6rem; flex-shrink: 0;
+}
 
 /* ── Buttons ── */
 .btn-primary {
@@ -862,13 +866,17 @@ const T = {
     "q.profile.hetero":       "Pareja heterosexual",
     "q.profile.women":        "Pareja de mujeres",
     "q.profile.single-woman": "Mujer soltera",
-    "q.profile.men":          "Pareja de hombres\no hombre solo",
+    "q.profile.men":          "Soy hombre",
+    "q.men-partner.title":    "¿Tienes pareja?",
+    "q.men-partner.yes":      "Sí, somos pareja",
+    "q.men-partner.no":       "No, voy por mi cuenta",
 
     /* Q2 */
     "q.age.title":             "¿Cuántos años tiene la mujer?",
     "q.age.sub.hetero":        "Esto nos ayuda a entender mejor tu perfil y las opciones disponibles.",
     "q.age.sub.women":         "Usa la edad de quien llevará el embarazo.",
     "q.age.sub.single-woman":  "Esto nos ayuda a entender mejor tu perfil y las opciones disponibles.",
+    "q.age.sub.men":           "Esto nos ayuda a orientarte mejor sobre el proceso y los tiempos.",
     "q.age.card.label":       "Tu edad",
     "q.age.card.partner":     "Edad de tu pareja",
     "q.age.unit":             "años",
@@ -1053,12 +1061,16 @@ const T = {
     "q.profile.hetero":       "Heterosexual couple",
     "q.profile.women":        "Female couple",
     "q.profile.single-woman": "Single woman",
-    "q.profile.men":          "Male couple\nor single man",
+    "q.profile.men":          "I'm a man",
+    "q.men-partner.title":    "Do you have a partner?",
+    "q.men-partner.yes":      "Yes, we're a couple",
+    "q.men-partner.no":       "No, going solo",
 
     "q.age.title":             "How old is the woman?",
     "q.age.sub.hetero":        "This helps us better understand your profile and the options available.",
     "q.age.sub.women":         "Use the age of the woman who will carry the pregnancy.",
     "q.age.sub.single-woman":  "This helps us better understand your profile and the options available.",
+    "q.age.sub.men":           "This helps us better guide you on the process and timelines.",
     "q.age.card.label":       "Your age",
     "q.age.card.partner":     "Your partner's age",
     "q.age.unit":             "years",
@@ -1256,6 +1268,9 @@ function setLang(lang) {
 /* ============================================================
    QUESTIONS
    ============================================================ */
+/* Inline SVG icon helper (Material Design paths, same system as Chakra UI on go.ingenes.com) */
+const ico = d => `<svg class="opt-icon-svg" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="${d}"/></svg>`;
+
 const QUESTIONS = {
   profile: {
     key: 'profile', titleKey: 'q.profile.title', cols: 2,
@@ -1263,34 +1278,41 @@ const QUESTIONS = {
       { value: 'hetero',       icon: '<div class="profile-icon"><img src="woman.png" alt="mujer"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.hetero' },
       { value: 'women',        icon: '<div class="profile-icon"><img src="woman.png" alt="mujer"><img src="woman.png" alt="mujer"></div>', labelKey: 'q.profile.women' },
       { value: 'single-woman', icon: '<div class="profile-icon profile-icon--solo"><img src="woman.png" alt="mujer"></div>', labelKey: 'q.profile.single-woman' },
-      { value: 'men',          icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.men' },
+      { value: 'men',          icon: '<div class="profile-icon profile-icon--solo"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.men' },
+    ]
+  },
+  'men-partner': {
+    key: 'men-partner', titleKey: 'q.men-partner.title', cols: 2,
+    options: [
+      { value: 'yes', icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>', labelKey: 'q.men-partner.yes' },
+      { value: 'no',  icon: '<div class="profile-icon profile-icon--solo"><img src="man.png" alt="hombre"></div>',              labelKey: 'q.men-partner.no' },
     ]
   },
   age: {
     key: 'age', titleKey: 'q.age.title', cols: '4',
     subtitleFn: () => t('q.age.sub.' + (state.answers.profile || 'hetero')),
     options: [
-      { value: '<30',   icon: '🌱', labelKey: 'q.age.<30' },
-      { value: '30-34', icon: '⭐', labelKey: 'q.age.30-34' },
-      { value: '35-39', icon: '⏳', labelKey: 'q.age.35-39' },
-      { value: '40+',   icon: '💫', labelKey: 'q.age.40+' },
+      { value: '<30',   icon: ico('M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z'), labelKey: 'q.age.<30' },
+      { value: '30-34', icon: ico('M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z'), labelKey: 'q.age.30-34' },
+      { value: '35-39', icon: ico('M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z'), labelKey: 'q.age.35-39' },
+      { value: '40+',   icon: ico('M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z'), labelKey: 'q.age.40+' },
     ]
   },
   previous: {
     key: 'previous', titleFn: () => t(state.answers.profile === 'single-woman' ? 'q.previous.title.single' : 'q.previous.title'), cols: 2,
     options: [
-      { value: 'none',        icon: '🆕', labelKey: 'q.previous.none' },
-      { value: 'iui',         icon: '💉', labelKey: 'q.previous.iui',         subKey: 'q.previous.iui.sub' },
-      { value: 'ivf-fail',    icon: '🔬', labelKey: 'q.previous.ivf-fail' },
-      { value: 'ivf-success', icon: '🍼', labelKey: 'q.previous.ivf-success', subKey: 'q.previous.ivf-success.sub' },
+      { value: 'none',        icon: ico('M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'), labelKey: 'q.previous.none' },
+      { value: 'iui',         icon: ico('M12 2c-5.33 4.55-8 8.48-8 11.8 0 4.98 3.8 8.2 8 8.2s8-3.22 8-8.2c0-3.32-2.67-7.25-8-11.8zm0 18c-3.35 0-6-2.57-6-6.2 0-2.34 1.95-5.44 6-9.14 4.05 3.7 6 6.79 6 9.14 0 3.63-2.65 6.2-6 6.2z'), labelKey: 'q.previous.iui', subKey: 'q.previous.iui.sub' },
+      { value: 'ivf-fail',    icon: ico('M19.8 18.4L14 10.67V6h1c.55 0 1-.45 1-1s-.45-1-1-1H9c-.55 0-1 .45-1 1s.45 1 1 1h1v4.67L4.2 18.4c-.78 1.17-.02 2.6 1.38 2.6h12.84c1.4 0 2.16-1.43 1.38-2.6z'), labelKey: 'q.previous.ivf-fail' },
+      { value: 'ivf-success', icon: ico('M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'), labelKey: 'q.previous.ivf-success', subKey: 'q.previous.ivf-success.sub' },
     ]
   },
   timeline: {
     key: 'timeline', titleKey: 'q.timeline.title', cols: '3',
     options: [
-      { value: '<1y',  icon: '🚀', labelKey: 'q.timeline.<1y' },
-      { value: '1-3y', icon: '📅', labelKey: 'q.timeline.1-3y' },
-      { value: '3y+',  icon: '🌱', labelKey: 'q.timeline.3y+' },
+      { value: '<1y',  icon: ico('M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z'), labelKey: 'q.timeline.<1y' },
+      { value: '1-3y', icon: ico('M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z'), labelKey: 'q.timeline.1-3y' },
+      { value: '3y+',  icon: ico('M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'), labelKey: 'q.timeline.3y+' },
     ]
   }
 };
@@ -1324,7 +1346,7 @@ function getActiveSteps() {
   const steps = ['profile'];
   if (!p) return steps;
   if (p === 'men') {
-    steps.push('timeline');   // no age, no previous treatments for men
+    steps.push('men-partner', 'age', 'timeline');
     return steps;
   }
   steps.push('age', 'previous', 'timeline');
@@ -1576,7 +1598,7 @@ function nextStep() {
   } else {
     const p = state.answers.profile;
     if (p === 'men') {
-      showScreen('screen-men');
+      goToForm();          // men go through the form gate like all other profiles
     } else {
       renderResults(); showScreen('screen-results');
     }
@@ -1601,7 +1623,7 @@ function renderResults() {
   document.getElementById('timeline-insight-wrap').innerHTML = timelineInsightHTML(state.answers.timeline);
 
   // Lock count badge
-  document.getElementById('lock-count-badge').textContent = `🔍 ${n} ${t('results.lock.count')}`;
+  document.getElementById('lock-count-badge').innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" style="width:12px;height:12px;flex-shrink:0"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg> ${n} ${t('results.lock.count')}`;
 
   // Blurred factor cards (don't include color card or next steps — those are the reward)
   document.getElementById('factors-grid').innerHTML = buildFactorCards(false, false);
@@ -1665,8 +1687,12 @@ function submitForm(e) {
   // TODO: POST lead to Airtable
   console.log('Lead captured:', lead);
 
-  renderUnlocked();
-  showScreen('screen-unlocked');
+  if (state.answers.profile === 'men') {
+    showScreen('screen-men');
+  } else {
+    renderUnlocked();
+    showScreen('screen-unlocked');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
