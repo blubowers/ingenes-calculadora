@@ -224,6 +224,8 @@ button { font-family: inherit; }
 .options-grid--1 { grid-template-columns: 1fr; }
 .options-grid--3 { grid-template-columns: repeat(3, 1fr); }
 .options-grid--4 { grid-template-columns: repeat(4, 1fr); }
+/* 3 equal cols, stacks to 1 col on mobile — no orphan at any size */
+.options-grid--3eq { grid-template-columns: repeat(3, 1fr); }
 /* 5 options: last orphan card is centered */
 .options-grid--2lc .option-card:last-child:nth-child(odd) {
   grid-column: 1 / -1;
@@ -233,6 +235,7 @@ button { font-family: inherit; }
 @media (max-width: 520px) {
   .options-grid { grid-template-columns: 1fr; }
   .options-grid--3, .options-grid--4 { grid-template-columns: repeat(2, 1fr); }
+  .options-grid--3eq { grid-template-columns: 1fr; }
 }
 .option-card {
   appearance: none; background: var(--color-white);
@@ -1286,7 +1289,7 @@ const QUESTIONS = {
     ]
   },
   'men-partner': {
-    key: 'men-partner', titleKey: 'q.men-partner.title', cols: 3,
+    key: 'men-partner', titleKey: 'q.men-partner.title', cols: '3eq',
     options: [
       { value: 'partner-woman', icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="woman.png" alt="mujer"></div>',   labelKey: 'q.men-partner.partner-woman' },
       { value: 'partner-man',   icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>',   labelKey: 'q.men-partner.partner-man' },
@@ -1552,7 +1555,7 @@ function renderQuizStep() {
   /* ── Timeline: 3-position snap slider ── */
 
   const subtitle = q.subtitleFn ? q.subtitleFn() : '';
-  const colClass = q.cols === '4' ? 'options-grid--4' : q.cols === '3' ? 'options-grid--3' : q.cols === '2lc' ? 'options-grid--2lc' : q.cols === 1 ? 'options-grid--1' : '';
+  const colClass = q.cols === '4' ? 'options-grid--4' : q.cols === '3' ? 'options-grid--3' : q.cols === '3eq' ? 'options-grid--3eq' : q.cols === '2lc' ? 'options-grid--2lc' : q.cols === 1 ? 'options-grid--1' : '';
   const selected = state.answers[q.key];
   const questionTitle = q.titleFn ? q.titleFn() : t(q.titleKey);
 
