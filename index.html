@@ -867,9 +867,10 @@ const T = {
     "q.profile.women":        "Pareja de mujeres",
     "q.profile.single-woman": "Mujer soltera",
     "q.profile.men":          "Soy hombre",
-    "q.men-partner.title":    "¿Tienes pareja?",
-    "q.men-partner.yes":      "Sí, somos pareja",
-    "q.men-partner.no":       "No, voy por mi cuenta",
+    "q.men-partner.title":          "¿Tienes pareja?",
+    "q.men-partner.partner-woman":  "Sí, pareja mujer",
+    "q.men-partner.partner-man":    "Sí, pareja hombre",
+    "q.men-partner.no":             "No tengo pareja",
 
     /* Q2 */
     "q.age.title":             "¿Cuántos años tiene la mujer?",
@@ -877,6 +878,7 @@ const T = {
     "q.age.sub.women":         "Usa la edad de quien llevará el embarazo.",
     "q.age.sub.single-woman":  "Esto nos ayuda a entender mejor tu perfil y las opciones disponibles.",
     "q.age.sub.men":           "Esto nos ayuda a orientarte mejor sobre el proceso y los tiempos.",
+    "q.age.sub.men-partner-woman": "Usa la edad de tu pareja — quien llevará el embarazo.",
     "q.age.card.label":       "Tu edad",
     "q.age.card.partner":     "Edad de tu pareja",
     "q.age.unit":             "años",
@@ -1062,15 +1064,17 @@ const T = {
     "q.profile.women":        "Female couple",
     "q.profile.single-woman": "Single woman",
     "q.profile.men":          "I'm a man",
-    "q.men-partner.title":    "Do you have a partner?",
-    "q.men-partner.yes":      "Yes, we're a couple",
-    "q.men-partner.no":       "No, going solo",
+    "q.men-partner.title":          "Do you have a partner?",
+    "q.men-partner.partner-woman":  "Yes, female partner",
+    "q.men-partner.partner-man":    "Yes, male partner",
+    "q.men-partner.no":             "I don't have a partner",
 
     "q.age.title":             "How old is the woman?",
     "q.age.sub.hetero":        "This helps us better understand your profile and the options available.",
     "q.age.sub.women":         "Use the age of the woman who will carry the pregnancy.",
     "q.age.sub.single-woman":  "This helps us better understand your profile and the options available.",
     "q.age.sub.men":           "This helps us better guide you on the process and timelines.",
+    "q.age.sub.men-partner-woman": "Use your partner's age — she will carry the pregnancy.",
     "q.age.card.label":       "Your age",
     "q.age.card.partner":     "Your partner's age",
     "q.age.unit":             "years",
@@ -1282,15 +1286,21 @@ const QUESTIONS = {
     ]
   },
   'men-partner': {
-    key: 'men-partner', titleKey: 'q.men-partner.title', cols: 2,
+    key: 'men-partner', titleKey: 'q.men-partner.title', cols: 3,
     options: [
-      { value: 'yes', icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>', labelKey: 'q.men-partner.yes' },
-      { value: 'no',  icon: '<div class="profile-icon profile-icon--solo"><img src="man.png" alt="hombre"></div>',              labelKey: 'q.men-partner.no' },
+      { value: 'partner-woman', icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="woman.png" alt="mujer"></div>',   labelKey: 'q.men-partner.partner-woman' },
+      { value: 'partner-man',   icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>',   labelKey: 'q.men-partner.partner-man' },
+      { value: 'no',            icon: '<div class="profile-icon profile-icon--solo"><img src="man.png" alt="hombre"></div>',                labelKey: 'q.men-partner.no' },
     ]
   },
   age: {
     key: 'age', titleKey: 'q.age.title', cols: '4',
-    subtitleFn: () => t('q.age.sub.' + (state.answers.profile || 'hetero')),
+    subtitleFn: () => {
+      const p = state.answers.profile;
+      const mp = state.answers['men-partner'];
+      if (p === 'men' && mp === 'partner-woman') return t('q.age.sub.men-partner-woman');
+      return t('q.age.sub.' + (p || 'hetero'));
+    },
     options: [
       { value: '<30',   icon: ico('M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z'), labelKey: 'q.age.<30' },
       { value: '30-34', icon: ico('M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z'), labelKey: 'q.age.30-34' },
@@ -1342,11 +1352,19 @@ function getConsultSegment() {
 }
 
 function getActiveSteps() {
-  const p = state.answers.profile;
+  const p  = state.answers.profile;
+  const mp = state.answers['men-partner'];
   const steps = ['profile'];
   if (!p) return steps;
   if (p === 'men') {
-    steps.push('men-partner', 'age', 'timeline');
+    steps.push('men-partner');
+    if (mp === 'partner-woman') {
+      // Full hetero flow: age of female partner → previous treatments → timeline
+      steps.push('age', 'previous', 'timeline');
+    } else {
+      // Same-sex couple or solo: age → timeline (no previous treatments step)
+      steps.push('age', 'timeline');
+    }
     return steps;
   }
   steps.push('age', 'previous', 'timeline');
@@ -1358,8 +1376,10 @@ function getActiveSteps() {
    ============================================================ */
 function getLeadColor() {
   const { profile, age, previous } = state.answers;
+  const mp = state.answers['men-partner'];
   if (!profile) return null;
-  if (profile === 'men') return 'azul';
+  // Solo man or man with male partner → always azul (surrogacy path)
+  if (profile === 'men' && mp !== 'partner-woman') return 'azul';
   if (!age) return null;
   const b = getAgeBucket(age);
   if (b === '35-39' || b === '40+') return 'azul';
@@ -1596,9 +1616,10 @@ function nextStep() {
   if (state.currentStep < steps.length - 1) {
     state.currentStep++; renderQuizStep();
   } else {
-    const p = state.answers.profile;
-    if (p === 'men') {
-      goToForm();          // men go through the form gate like all other profiles
+    const p  = state.answers.profile;
+    const mp = state.answers['men-partner'];
+    if (p === 'men' && mp !== 'partner-woman') {
+      goToForm();          // solo man or male couple → skip results, go straight to form
     } else {
       renderResults(); showScreen('screen-results');
     }
@@ -1687,7 +1708,8 @@ function submitForm(e) {
   // TODO: POST lead to Airtable
   console.log('Lead captured:', lead);
 
-  if (state.answers.profile === 'men') {
+  const mp = state.answers['men-partner'];
+  if (state.answers.profile === 'men' && mp !== 'partner-woman') {
     showScreen('screen-men');
   } else {
     renderUnlocked();
