@@ -827,16 +827,9 @@ button { font-family: inherit; }
 <section id="screen-men" class="screen" hidden>
   <div class="container">
     <div class="special-wrap animate-in">
-      <div class="special-icon">
-        <svg width="48" height="43" viewBox="0 0 48 43" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10.4067 9.6458C7.89689 8.60517 6.74607 6.85445 7.1256 4.82215C7.50512 2.76537 9.09668 1.33296 11.1045 1.2595C13.149 1.18605 14.8753 2.50827 15.3772 4.54057C15.9037 6.65857 14.8753 8.33583 12.2308 9.6458C14.508 9.76823 15.769 11.0537 16.5158 13.0615C17.8625 16.7221 19.2459 20.3705 20.6171 24.0188C20.6539 24.1168 20.6783 24.2269 20.7396 24.4351C19.8458 24.7167 18.9521 24.986 18.0094 25.2798C18.9154 27.7774 19.8214 30.2504 20.7518 32.8091C19.3194 32.8091 17.9727 32.8091 16.5525 32.8091C16.5525 35.6372 16.5525 38.4163 16.5525 41.2199C15.1324 41.2199 13.7734 41.2199 12.3655 41.2199C12.3655 38.4408 12.3655 35.6862 12.3655 32.8826C11.6432 32.8826 10.9698 32.8826 10.2597 32.8826C10.2597 35.6372 10.2597 38.3918 10.2597 41.1954C8.83958 41.1954 7.48064 41.1954 6.04823 41.1954C6.04823 38.4408 6.04823 35.6862 6.04823 32.8581C4.61583 32.8581 3.25688 32.8581 1.79999 32.8581C2.74268 30.2871 3.6364 27.8018 4.55461 25.2798C3.61192 24.986 2.73044 24.7044 1.81223 24.4228C2.79165 21.8029 3.74659 19.2564 4.70153 16.7221C5.16675 15.4856 5.63198 14.2613 6.06047 13.0248C6.77055 11.0292 8.05605 9.78048 10.4067 9.6458Z" stroke="currentColor" stroke-width="2" stroke-miterlimit="10"/>
-          <path d="M37.7166 9.6677C34.9987 8.39446 33.9826 6.72944 34.4723 4.50125C34.8763 2.65259 36.5903 1.2814 38.5001 1.25692C40.459 1.23243 42.2097 2.59138 42.6382 4.45228C43.1402 6.66822 42.1607 8.33324 39.4184 9.6677C40.0182 9.6677 40.459 9.65546 40.8997 9.6677C44.2665 9.76565 46.9232 12.4101 46.9599 15.7768C46.9966 19.1681 46.9721 22.5593 46.9721 25.9628C46.9721 26.1098 46.9599 26.2567 46.9477 26.4525C46.2621 26.4525 45.6132 26.4525 44.8909 26.4525C44.8909 31.3741 44.8909 36.2468 44.8909 41.1439C43.4707 41.1439 42.124 41.1439 40.7038 41.1439C40.7038 36.9813 40.7038 32.831 40.7038 28.6195C39.2714 28.6195 37.9125 28.6195 36.4678 28.6195C36.4678 32.7821 36.4678 36.9324 36.4678 41.1316C35.0477 41.1316 33.701 41.1316 32.2808 41.1316C32.2808 36.2713 32.2808 31.4109 32.2808 26.477C31.5585 26.477 30.9096 26.477 30.1506 26.477C30.1506 26.1955 30.1506 25.9628 30.1506 25.7425C30.1506 22.5716 30.1506 19.3885 30.1506 16.2176C30.1506 12.2877 32.7705 9.65546 36.6882 9.64322C36.9698 9.6677 37.2514 9.6677 37.7166 9.6677Z" stroke="currentColor" stroke-width="2" stroke-miterlimit="10"/>
-        </svg>
-      </div>
-      <h2 class="special-title" data-i18n-html="men.title">Tu camino tiene <em>opciones especiales</em></h2>
-      <p class="special-body" data-i18n="men.body">
-        Para perfiles masculinos, los tratamientos involucran tecnologías reproductivas especializadas. Un especialista de Ingenes puede orientarte sin costo ni compromiso.
-      </p>
+      <div id="men-special-icon" class="special-icon"></div>
+      <h2 id="men-special-title" class="special-title"></h2>
+      <p  id="men-special-body"  class="special-body"></p>
       <div class="consult-card" style="max-width:440px;margin:0 auto;">
         <p class="consult-title" data-i18n-html="consult.men.title"></p>
         <p class="consult-sub" data-i18n="consult.men.sub"></p>
@@ -1053,6 +1046,10 @@ const T = {
 
     "men.title": "Tu camino tiene <em>opciones especiales</em>",
     "men.body":  "Para parejas de hombres y hombres solos, la subrogación es la vía disponible en reproducción asistida. Contamos con especialistas que pueden orientarte sobre todo el proceso — sin compromisos, solo información.",
+    "men.solo.title":   "Tu camino tiene <em>opciones especiales</em>",
+    "men.solo.body":    "Para hombres que quieren ser padres en solitario, la gestación subrogada es la vía disponible en reproducción asistida. Contamos con especialistas que pueden orientarte sobre todo el proceso — sin compromisos, solo información.",
+    "men.couple.title": "Tu camino tiene <em>opciones especiales</em>",
+    "men.couple.body":  "Para parejas de hombres, la gestación subrogada es la vía disponible en reproducción asistida. Contamos con especialistas que pueden orientarlos sobre todo el proceso — sin compromisos, solo información.",
 
     "footer.copy": "© 2026 Instituto Ingenes. Todos los derechos reservados.",
   },
@@ -1239,6 +1236,10 @@ const T = {
 
     "men.title": "Your path has <em>special options</em>",
     "men.body":  "For male couples and single men, surrogacy is the path available in assisted reproduction. We have specialists who can walk you through the entire process — no commitment, just information.",
+    "men.solo.title":   "Your path has <em>special options</em>",
+    "men.solo.body":    "For men who want to become fathers on their own, surrogacy is the path available in assisted reproduction. We have specialists who can walk you through the entire process — no commitment, just information.",
+    "men.couple.title": "Your path has <em>special options</em>",
+    "men.couple.body":  "For male couples, surrogacy is the path available in assisted reproduction. We have specialists who can walk you through the entire process — no commitment, just information.",
 
     "footer.copy": "© 2026 Instituto Ingenes. All rights reserved.",
   }
@@ -1280,6 +1281,7 @@ function setLang(lang) {
   if (vis('screen-quiz'))     renderQuizStep();
   if (vis('screen-results'))  renderResults();
   if (vis('screen-unlocked')) renderUnlocked();
+  if (vis('screen-men'))      renderMenScreen();
 }
 
 /* ============================================================
@@ -1738,6 +1740,7 @@ function submitForm(e) {
 
   const mp = state.answers['men-partner'];
   if (state.answers.profile === 'men' && mp !== 'partner-woman') {
+    renderMenScreen();
     showScreen('screen-men');
   } else {
     renderUnlocked();
@@ -1757,6 +1760,29 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('ff-phone').classList.remove('has-error');
   });
 });
+
+/* ============================================================
+   MEN SCREEN
+   ============================================================ */
+const MEN_SVG_COUPLE = `<svg width="48" height="43" viewBox="0 0 48 43" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M10.4067 9.6458C7.89689 8.60517 6.74607 6.85445 7.1256 4.82215C7.50512 2.76537 9.09668 1.33296 11.1045 1.2595C13.149 1.18605 14.8753 2.50827 15.3772 4.54057C15.9037 6.65857 14.8753 8.33583 12.2308 9.6458C14.508 9.76823 15.769 11.0537 16.5158 13.0615C17.8625 16.7221 19.2459 20.3705 20.6171 24.0188C20.6539 24.1168 20.6783 24.2269 20.7396 24.4351C19.8458 24.7167 18.9521 24.986 18.0094 25.2798C18.9154 27.7774 19.8214 30.2504 20.7518 32.8091C19.3194 32.8091 17.9727 32.8091 16.5525 32.8091C16.5525 35.6372 16.5525 38.4163 16.5525 41.2199C15.1324 41.2199 13.7734 41.2199 12.3655 41.2199C12.3655 38.4408 12.3655 35.6862 12.3655 32.8826C11.6432 32.8826 10.9698 32.8826 10.2597 32.8826C10.2597 35.6372 10.2597 38.3918 10.2597 41.1954C8.83958 41.1954 7.48064 41.1954 6.04823 41.1954C6.04823 38.4408 6.04823 35.6862 6.04823 32.8581C4.61583 32.8581 3.25688 32.8581 1.79999 32.8581C2.74268 30.2871 3.6364 27.8018 4.55461 25.2798C3.61192 24.986 2.73044 24.7044 1.81223 24.4228C2.79165 21.8029 3.74659 19.2564 4.70153 16.7221C5.16675 15.4856 5.63198 14.2613 6.06047 13.0248C6.77055 11.0292 8.05605 9.78048 10.4067 9.6458Z" stroke="currentColor" stroke-width="2" stroke-miterlimit="10"/><path d="M37.7166 9.6677C34.9987 8.39446 33.9826 6.72944 34.4723 4.50125C34.8763 2.65259 36.5903 1.2814 38.5001 1.25692C40.459 1.23243 42.2097 2.59138 42.6382 4.45228C43.1402 6.66822 42.1607 8.33324 39.4184 9.6677C40.0182 9.6677 40.459 9.65546 40.8997 9.6677C44.2665 9.76565 46.9232 12.4101 46.9599 15.7768C46.9966 19.1681 46.9721 22.5593 46.9721 25.9628C46.9721 26.1098 46.9599 26.2567 46.9477 26.4525C46.2621 26.4525 45.6132 26.4525 44.8909 26.4525C44.8909 31.3741 44.8909 36.2468 44.8909 41.1439C43.4707 41.1439 42.124 41.1439 40.7038 41.1439C40.7038 36.9813 40.7038 32.831 40.7038 28.6195C39.2714 28.6195 37.9125 28.6195 36.4678 28.6195C36.4678 32.7821 36.4678 36.9324 36.4678 41.1316C35.0477 41.1316 33.701 41.1316 32.2808 41.1316C32.2808 36.2713 32.2808 31.4109 32.2808 26.477C31.5585 26.477 30.9096 26.477 30.1506 26.477C30.1506 26.1955 30.1506 25.9628 30.1506 25.7425C30.1506 22.5716 30.1506 19.3885 30.1506 16.2176C30.1506 12.2877 32.7705 9.65546 36.6882 9.64322C36.9698 9.6677 37.2514 9.6677 37.7166 9.6677Z" stroke="currentColor" stroke-width="2" stroke-miterlimit="10"/></svg>`;
+
+/* Solo man: same style, single figure centred in its own viewBox */
+const MEN_SVG_SOLO = `<svg height="43" viewBox="29.5 0 18 43" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M37.7166 9.6677C34.9987 8.39446 33.9826 6.72944 34.4723 4.50125C34.8763 2.65259 36.5903 1.2814 38.5001 1.25692C40.459 1.23243 42.2097 2.59138 42.6382 4.45228C43.1402 6.66822 42.1607 8.33324 39.4184 9.6677C40.0182 9.6677 40.459 9.65546 40.8997 9.6677C44.2665 9.76565 46.9232 12.4101 46.9599 15.7768C46.9966 19.1681 46.9721 22.5593 46.9721 25.9628C46.9721 26.1098 46.9599 26.2567 46.9477 26.4525C46.2621 26.4525 45.6132 26.4525 44.8909 26.4525C44.8909 31.3741 44.8909 36.2468 44.8909 41.1439C43.4707 41.1439 42.124 41.1439 40.7038 41.1439C40.7038 36.9813 40.7038 32.831 40.7038 28.6195C39.2714 28.6195 37.9125 28.6195 36.4678 28.6195C36.4678 32.7821 36.4678 36.9324 36.4678 41.1316C35.0477 41.1316 33.701 41.1316 32.2808 41.1316C32.2808 36.2713 32.2808 31.4109 32.2808 26.477C31.5585 26.477 30.9096 26.477 30.1506 26.477C30.1506 26.1955 30.1506 25.9628 30.1506 25.7425C30.1506 22.5716 30.1506 19.3885 30.1506 16.2176C30.1506 12.2877 32.7705 9.65546 36.6882 9.64322C36.9698 9.6677 37.2514 9.6677 37.7166 9.6677Z" stroke="currentColor" stroke-width="2" stroke-miterlimit="10"/></svg>`;
+
+function renderMenScreen() {
+  const mp     = state.answers['men-partner'];
+  const isSolo = mp === 'no';
+  document.getElementById('men-special-icon').innerHTML   = isSolo ? MEN_SVG_SOLO : MEN_SVG_COUPLE;
+  document.getElementById('men-special-title').innerHTML  = t(isSolo ? 'men.solo.title'  : 'men.couple.title');
+  document.getElementById('men-special-body').textContent = t(isSolo ? 'men.solo.body'   : 'men.couple.body');
+  // Consult card i18n
+  document.querySelectorAll('#screen-men [data-i18n]').forEach(el => {
+    const v = t(el.dataset.i18n); if (v) el.textContent = v;
+  });
+  document.querySelectorAll('#screen-men [data-i18n-html]').forEach(el => {
+    const v = t(el.dataset.i18nHtml); if (v) el.innerHTML = v;
+  });
+}
 
 /* ============================================================
    UNLOCKED
