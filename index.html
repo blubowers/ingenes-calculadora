@@ -519,16 +519,18 @@ button { font-family: inherit; }
   height: 38px;
   width: auto;
   display: block;
-  /* Navy #0B2545 — NO transition: avoids hue interpolation through green */
-  filter: brightness(0) saturate(100%) invert(9%) sepia(85%) saturate(600%) hue-rotate(196deg) brightness(90%) contrast(103%);
+  /* Blue ~#2D4178 */
+  filter: brightness(0) saturate(100%) invert(22%) sepia(55%) saturate(700%) hue-rotate(205deg) brightness(100%) contrast(95%);
+  transition: filter 0.15s;
 }
 .profile-icon--solo img { height: 42px; }
-/* Gold #c8a040 on hover / selected */
+/* Darker blue on hover */
 .option-card:hover .profile-icon img {
-  filter: brightness(0) saturate(100%) invert(64%) sepia(48%) saturate(570%) hue-rotate(3deg) brightness(100%) contrast(90%);
+  filter: brightness(0) saturate(100%) invert(16%) sepia(65%) saturate(800%) hue-rotate(210deg) brightness(90%) contrast(100%);
 }
+/* Same blue on selected (card bg + border carry the selection cue) */
 .option-card.is-selected .profile-icon img {
-  filter: brightness(0) saturate(100%) invert(64%) sepia(48%) saturate(570%) hue-rotate(3deg) brightness(100%) contrast(90%);
+  filter: brightness(0) saturate(100%) invert(22%) sepia(55%) saturate(700%) hue-rotate(205deg) brightness(100%) contrast(95%);
 }
 
 /* ── Age slider card ── */
