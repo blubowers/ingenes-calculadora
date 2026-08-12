@@ -539,6 +539,16 @@ button { font-family: inherit; }
   padding: var(--space-4) var(--space-5) var(--space-4);
   margin-bottom: var(--space-5);
 }
+/* Two age sliders side-by-side (women profile) */
+.age-dual-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+.age-dual-wrap .age-card { margin-bottom: 0; }
+@media (max-width: 480px) {
+  .age-dual-wrap { grid-template-columns: 1fr; }
+}
 .age-card-header {
   display: flex;
   justify-content: space-between;
@@ -899,8 +909,10 @@ const T = {
     "q.age.card.label":       "Tu edad",
     "q.age.card.partner":     "Edad de tu pareja",
     "q.age.unit":             "años",
-    "q.age.title.single-man": "¿Cuántos años tienes?",
-    "q.age.title.men-couple": "¿Cuántos años tienen?",
+    "q.age.title.single-woman": "¿Cuál es tu edad?",
+    "q.age.title.women":        "¿Cuántos años tienen?",
+    "q.age.title.single-man":   "¿Cuántos años tienes?",
+    "q.age.title.men-couple":   "¿Cuántos años tienen?",
     "q.age.<30":   "Menos de 30",
     "q.age.30-34": "30 – 34",
     "q.age.35-39": "35 – 39",
@@ -1099,8 +1111,10 @@ const T = {
     "q.age.card.label":       "Your age",
     "q.age.card.partner":     "Your partner's age",
     "q.age.unit":             "years",
-    "q.age.title.single-man": "How old are you?",
-    "q.age.title.men-couple": "How old are you both?",
+    "q.age.title.single-woman": "How old are you?",
+    "q.age.title.women":        "How old are you both?",
+    "q.age.title.single-man":   "How old are you?",
+    "q.age.title.men-couple":   "How old are you both?",
     "q.age.<30":   "Under 30",
     "q.age.30-34": "30 – 34",
     "q.age.35-39": "35 – 39",
@@ -1314,12 +1328,16 @@ const QUESTIONS = {
     key: 'age', cols: '4',
     titleFn: () => {
       const p = state.answers.profile;
-      if (p === 'men-solo' || p === 'men-couple') return t('q.age.title.single-man');
+      if (p === 'men-solo')     return t('q.age.title.single-man');
+      if (p === 'men-couple')   return t('q.age.title.men-couple');
+      if (p === 'single-woman') return t('q.age.title.single-woman');
+      if (p === 'women')        return t('q.age.title.women');
       return t('q.age.title');
     },
     subtitleFn: () => {
       const p = state.answers.profile;
       if (p === 'men-solo' || p === 'men-couple') return t('q.age.sub.men');
+      if (p === 'women') return '';   // dual sliders have their own labels
       return t('q.age.sub.' + (p || 'hetero'));
     },
     options: [
@@ -1542,13 +1560,43 @@ function renderQuizStep() {
 
   /* ── Age: continuous slider (adapts to profile) ── */
   if (stepKey === 'age') {
-    const defaultAge = 30;
-    const profile    = state.answers.profile;
-    const currentAge = Math.min(55, Math.max(18, parseInt(state.answers.age) || defaultAge));
+    const defaultAge    = 30;
+    const profile       = state.answers.profile;
+    const currentAge    = Math.min(55, Math.max(18, parseInt(state.answers.age)         || defaultAge));
+    const currentAgeP   = Math.min(55, Math.max(18, parseInt(state.answers.age_partner) || defaultAge));
+    const ageTitle      = q.titleFn ? q.titleFn() : t(q.titleKey);
+    const subtitle      = q.subtitleFn ? q.subtitleFn() : '';
 
-    const ageTitle = q.titleFn ? q.titleFn() : t(q.titleKey);
-    const subtitle = q.subtitleFn ? q.subtitleFn() : '';
+    /* Female couple → two sliders side by side */
+    if (profile === 'women') {
+      const sliderHTML = (id, numId, val, oninput) => `
+        <div class="age-card">
+          <div class="age-card-header">
+            <span class="age-card-label">${id === 'age-slider' ? t('q.age.card.label') : t('q.age.card.partner')}</span>
+            <span class="age-card-value"><strong id="${numId}">${val}</strong> ${t('q.age.unit')}</span>
+          </div>
+          <input type="range" id="${id}" class="age-slider"
+                 min="18" max="55" step="1" value="${val}"
+                 oninput="${oninput}" />
+          <div class="age-slider-bounds"><span>18</span><span>55</span></div>
+        </div>`;
 
+      document.getElementById('quiz-question-area').innerHTML = `<div class="animate-in">
+        <p class="q-title">${ageTitle}</p>
+        <div class="age-dual-wrap">
+          ${sliderHTML('age-slider',         'age-num',         currentAge,  'updateAgeSliderUI(this.value)')}
+          ${sliderHTML('age-partner-slider', 'age-partner-num', currentAgeP, 'updateAgePartnerSliderUI(this.value)')}
+        </div>
+      </div>`;
+
+      state.answers.age         = String(currentAge);
+      state.answers.age_partner = String(currentAgeP);
+      document.getElementById('btn-back').style.visibility = state.currentStep > 0 ? 'visible' : 'hidden';
+      document.getElementById('btn-next').disabled = false;
+      return;
+    }
+
+    /* All other profiles → single slider */
     document.getElementById('quiz-question-area').innerHTML = `<div class="animate-in">
       <p class="q-title">${ageTitle}</p>
       ${subtitle ? `<p class="q-sub">${subtitle}</p>` : ''}
