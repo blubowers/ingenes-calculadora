@@ -206,6 +206,8 @@ button { font-family: inherit; }
 
 /* ── Quiz ── */
 .quiz-wrap { max-width: 640px; margin: 0 auto; }
+/* Wider layout for the 5-option profile question */
+.quiz-wrap--wide { max-width: 860px; }
 .q-title {
   font-family: var(--font-serif);
   font-size: clamp(1.25rem, 3.5vw, 1.65rem);
@@ -226,6 +228,8 @@ button { font-family: inherit; }
 .options-grid--4 { grid-template-columns: repeat(4, 1fr); }
 /* 3 equal cols, stacks to 1 col on mobile — no orphan at any size */
 .options-grid--3eq { grid-template-columns: repeat(3, 1fr); }
+/* 5 equal cols for the profile question */
+.options-grid--5 { grid-template-columns: repeat(5, 1fr); }
 /* Triple calendar icon for 3y+ timeline option */
 .triple-cal {
   display: flex; justify-content: center; align-items: center;
@@ -237,6 +241,12 @@ button { font-family: inherit; }
   grid-column: 1 / -1;
   max-width: calc(50% - var(--space-3) / 2);
   margin: 0 auto;
+}
+@media (max-width: 640px) {
+  .options-grid--5 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 380px) {
+  .options-grid--5 { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 520px) {
   .options-grid { grid-template-columns: 1fr; }
@@ -872,7 +882,8 @@ const T = {
     "q.profile.hetero":       "Pareja heterosexual",
     "q.profile.women":        "Pareja de mujeres",
     "q.profile.single-woman": "Mujer soltera",
-    "q.profile.men":          "Soy hombre",
+    "q.profile.men-solo":     "Hombre solo",
+    "q.profile.men-couple":   "Pareja de hombres",
     "q.men-partner.title":          "¿Tienes pareja?",
     "q.men-partner.partner-woman":  "Sí, pareja mujer",
     "q.men-partner.partner-man":    "Sí, pareja hombre",
@@ -1074,6 +1085,8 @@ const T = {
     "q.profile.women":        "Female couple",
     "q.profile.single-woman": "Single woman",
     "q.profile.men":          "I'm a man",
+    "q.profile.men-solo":     "Single man",
+    "q.profile.men-couple":   "Male couple",
     "q.men-partner.title":          "Do you have a partner?",
     "q.men-partner.partner-woman":  "Yes, female partner",
     "q.men-partner.partner-man":    "Yes, male partner",
@@ -1292,37 +1305,25 @@ const ico = d => `<svg class="opt-icon-svg" viewBox="0 0 24 24" aria-hidden="tru
 
 const QUESTIONS = {
   profile: {
-    key: 'profile', titleKey: 'q.profile.title', cols: 2,
+    key: 'profile', titleKey: 'q.profile.title', cols: '5',
     options: [
-      { value: 'hetero',       icon: '<div class="profile-icon"><img src="woman.png" alt="mujer"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.hetero' },
+      { value: 'hetero',       icon: '<div class="profile-icon"><img src="woman.png" alt="mujer"><img src="man.png" alt="hombre"></div>',   labelKey: 'q.profile.hetero' },
       { value: 'women',        icon: '<div class="profile-icon"><img src="woman.png" alt="mujer"><img src="woman.png" alt="mujer"></div>', labelKey: 'q.profile.women' },
-      { value: 'single-woman', icon: '<div class="profile-icon profile-icon--solo"><img src="woman.png" alt="mujer"></div>', labelKey: 'q.profile.single-woman' },
-      { value: 'men',          icon: '<div class="profile-icon profile-icon--solo"><img src="man.png" alt="hombre"></div>', labelKey: 'q.profile.men' },
-    ]
-  },
-  'men-partner': {
-    key: 'men-partner', titleKey: 'q.men-partner.title', cols: '3eq',
-    options: [
-      { value: 'partner-woman', icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="woman.png" alt="mujer"></div>',   labelKey: 'q.men-partner.partner-woman' },
-      { value: 'partner-man',   icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>',   labelKey: 'q.men-partner.partner-man' },
-      { value: 'no',            icon: '<div class="profile-icon profile-icon--solo"><img src="man.png" alt="hombre"></div>',                labelKey: 'q.men-partner.no' },
+      { value: 'single-woman', icon: '<div class="profile-icon profile-icon--solo"><img src="woman.png" alt="mujer"></div>',               labelKey: 'q.profile.single-woman' },
+      { value: 'men-solo',     icon: '<div class="profile-icon profile-icon--solo"><img src="man.png" alt="hombre"></div>',                labelKey: 'q.profile.men-solo' },
+      { value: 'men-couple',   icon: '<div class="profile-icon"><img src="man.png" alt="hombre"><img src="man.png" alt="hombre"></div>',   labelKey: 'q.profile.men-couple' },
     ]
   },
   age: {
     key: 'age', cols: '4',
     titleFn: () => {
-      const p  = state.answers.profile;
-      const mp = state.answers['men-partner'];
-      // Solo man or male couple → ask his own age
-      if (p === 'men' && mp !== 'partner-woman') return t('q.age.title.single-man');
-      // All other profiles → ask the woman's age
+      const p = state.answers.profile;
+      if (p === 'men-solo' || p === 'men-couple') return t('q.age.title.single-man');
       return t('q.age.title');
     },
     subtitleFn: () => {
-      const p  = state.answers.profile;
-      const mp = state.answers['men-partner'];
-      if (p === 'men' && mp === 'partner-woman') return t('q.age.sub.men-partner-woman');
-      if (p === 'men') return t('q.age.sub.men');
+      const p = state.answers.profile;
+      if (p === 'men-solo' || p === 'men-couple') return t('q.age.sub.men');
       return t('q.age.sub.' + (p || 'hetero'));
     },
     options: [
@@ -1382,19 +1383,12 @@ function getConsultSegment() {
 }
 
 function getActiveSteps() {
-  const p  = state.answers.profile;
-  const mp = state.answers['men-partner'];
+  const p = state.answers.profile;
   const steps = ['profile'];
   if (!p) return steps;
-  if (p === 'men') {
-    steps.push('men-partner');
-    if (mp === 'partner-woman') {
-      // Full hetero flow: age of female partner → previous treatments → timeline
-      steps.push('age', 'previous', 'timeline');
-    } else {
-      // Same-sex couple or solo: age → timeline (no previous treatments step)
-      steps.push('age', 'timeline');
-    }
+  if (p === 'men-solo' || p === 'men-couple') {
+    // Men flows: age → timeline only (no previous treatments)
+    steps.push('age', 'timeline');
     return steps;
   }
   steps.push('age', 'previous', 'timeline');
@@ -1406,10 +1400,9 @@ function getActiveSteps() {
    ============================================================ */
 function getLeadColor() {
   const { profile, age, previous } = state.answers;
-  const mp = state.answers['men-partner'];
   if (!profile) return null;
-  // Solo man or man with male partner → always azul (surrogacy path)
-  if (profile === 'men' && mp !== 'partner-woman') return 'azul';
+  // Men flows → always azul (surrogacy path)
+  if (profile === 'men-solo' || profile === 'men-couple') return 'azul';
   if (!age) return null;
   const b = getAgeBucket(age);
   if (b === '35-39' || b === '40+') return 'azul';
@@ -1542,8 +1535,11 @@ function renderQuizStep() {
 
   const q     = QUESTIONS[stepKey];
 
-  // For men (3 steps) show correct total; before profile is answered show max (4)
-  const total   = state.answers.profile ? steps.length : Object.keys(QUESTIONS).length;
+  // Widen the quiz wrap only for the 5-option profile question
+  document.querySelector('.quiz-wrap').classList.toggle('quiz-wrap--wide', stepKey === 'profile');
+
+  // Accurate total: profile answered → use actual steps; before → show 4 (typical max)
+  const total   = state.answers.profile ? steps.length : 4;
   const stepPct = Math.round((state.currentStep / total) * 100);
   document.getElementById('quiz-step-label').textContent =
     `${t('quiz.step')} ${state.currentStep + 1} ${t('quiz.of')} ${total}`;
@@ -1582,7 +1578,7 @@ function renderQuizStep() {
   /* ── Timeline: 3-position snap slider ── */
 
   const subtitle = q.subtitleFn ? q.subtitleFn() : '';
-  const colClass = q.cols === '4' ? 'options-grid--4' : q.cols === '3' ? 'options-grid--3' : q.cols === '3eq' ? 'options-grid--3eq' : q.cols === '2lc' ? 'options-grid--2lc' : q.cols === 1 ? 'options-grid--1' : '';
+  const colClass = q.cols === '5' ? 'options-grid--5' : q.cols === '4' ? 'options-grid--4' : q.cols === '3' ? 'options-grid--3' : q.cols === '3eq' ? 'options-grid--3eq' : q.cols === '2lc' ? 'options-grid--2lc' : q.cols === 1 ? 'options-grid--1' : '';
   const selected = state.answers[q.key];
   const questionTitle = q.titleFn ? q.titleFn() : t(q.titleKey);
 
@@ -1646,10 +1642,9 @@ function nextStep() {
   if (state.currentStep < steps.length - 1) {
     state.currentStep++; renderQuizStep();
   } else {
-    const p  = state.answers.profile;
-    const mp = state.answers['men-partner'];
-    if (p === 'men' && mp !== 'partner-woman') {
-      goToForm();          // solo man or male couple → skip results, go straight to form
+    const p = state.answers.profile;
+    if (p === 'men-solo' || p === 'men-couple') {
+      goToForm();          // men flows → skip results, go straight to form
     } else {
       renderResults(); showScreen('screen-results');
     }
@@ -1738,8 +1733,8 @@ function submitForm(e) {
   // TODO: POST lead to Airtable
   console.log('Lead captured:', lead);
 
-  const mp = state.answers['men-partner'];
-  if (state.answers.profile === 'men' && mp !== 'partner-woman') {
+  const p = state.answers.profile;
+  if (p === 'men-solo' || p === 'men-couple') {
     renderMenScreen();
     showScreen('screen-men');
   } else {
@@ -1770,8 +1765,7 @@ const MEN_SVG_COUPLE = `<svg width="48" height="43" viewBox="0 0 48 43" fill="no
 const MEN_SVG_SOLO = `<svg height="43" viewBox="29.5 0 18 43" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M37.7166 9.6677C34.9987 8.39446 33.9826 6.72944 34.4723 4.50125C34.8763 2.65259 36.5903 1.2814 38.5001 1.25692C40.459 1.23243 42.2097 2.59138 42.6382 4.45228C43.1402 6.66822 42.1607 8.33324 39.4184 9.6677C40.0182 9.6677 40.459 9.65546 40.8997 9.6677C44.2665 9.76565 46.9232 12.4101 46.9599 15.7768C46.9966 19.1681 46.9721 22.5593 46.9721 25.9628C46.9721 26.1098 46.9599 26.2567 46.9477 26.4525C46.2621 26.4525 45.6132 26.4525 44.8909 26.4525C44.8909 31.3741 44.8909 36.2468 44.8909 41.1439C43.4707 41.1439 42.124 41.1439 40.7038 41.1439C40.7038 36.9813 40.7038 32.831 40.7038 28.6195C39.2714 28.6195 37.9125 28.6195 36.4678 28.6195C36.4678 32.7821 36.4678 36.9324 36.4678 41.1316C35.0477 41.1316 33.701 41.1316 32.2808 41.1316C32.2808 36.2713 32.2808 31.4109 32.2808 26.477C31.5585 26.477 30.9096 26.477 30.1506 26.477C30.1506 26.1955 30.1506 25.9628 30.1506 25.7425C30.1506 22.5716 30.1506 19.3885 30.1506 16.2176C30.1506 12.2877 32.7705 9.65546 36.6882 9.64322C36.9698 9.6677 37.2514 9.6677 37.7166 9.6677Z" stroke="currentColor" stroke-width="2" stroke-miterlimit="10"/></svg>`;
 
 function renderMenScreen() {
-  const mp     = state.answers['men-partner'];
-  const isSolo = mp === 'no';
+  const isSolo = state.answers.profile === 'men-solo';
   document.getElementById('men-special-icon').innerHTML   = isSolo ? MEN_SVG_SOLO : MEN_SVG_COUPLE;
   document.getElementById('men-special-title').innerHTML  = t(isSolo ? 'men.solo.title'  : 'men.couple.title');
   document.getElementById('men-special-body').textContent = t(isSolo ? 'men.solo.body'   : 'men.couple.body');
